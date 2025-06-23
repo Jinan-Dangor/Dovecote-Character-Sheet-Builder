@@ -1,2 +1,39 @@
-<h1>Placeholder Homepage</h1>
-<p>Nothing has been implemented yet. This will be replace with a more complete homepage once some features are complete.</p>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Dovecote</title>
+    </head>
+    <body>
+        <h1>First Colour Picker Prototype</h1>
+        <p>Click on the hue and saturation wheels to make your own custom colour scheme!</p>
+        <div class="color-picker" id="test-color-picker">
+            <div class="preview">
+                <canvas id="darkest"></canvas>
+                <canvas id="dark"></canvas>
+                <canvas id="midtone"></canvas>
+                <canvas id="light"></canvas>
+                <canvas id="lightest"></canvas>
+            </div>
+            <div class="slider-selectors" id="test-color-sliders">
+                <canvas id="hue-selector"></canvas>
+                <canvas id="saturation-selector"></canvas>
+            </div>
+        </div>
+        <div class="color-picker-text-preview" id="test-text-preview">
+            <div class="light-mode-preview" style="padding: 5px 20px">
+                <h2>Light Mode Preview <span class="icon">🔆</span></h2>
+                <p><i>A preview of what this looks like in light mode.</i></p>
+                <h3 class="highlighted" style="padding: 5px 10px">Highlighting Demo</h3>
+                <p>Subheading can be highlighted to separate sections</p>
+            </div>
+            <div class="dark-mode-preview" style="padding: 5px 20px">
+                <h2>Dark Mode Preview <span class="icon">🌙</span></h2>
+                <p><i>A preview of what this looks like in dark mode.</i></p>
+                <h3 class="highlighted" style="padding: 5px 10px">Highlighting Demo</h3>
+                <p>Subheading can be highlighted to separate sections</p>
+            </div>
+        </div>
+    </body>
+    <script src="scripts/canvas_test.js"></script>
+</html>
