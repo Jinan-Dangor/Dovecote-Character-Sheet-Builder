@@ -3,16 +3,27 @@
     <head>
         <meta charset="UTF-8" />
         <title>Dovecote</title>
+        <link rel="stylesheet" href="style/default_style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Germania+One&family=Playpen+Sans:wght@100..800&family=Signika+Negative:wght@300..700&display=swap" rel="stylesheet">
+        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.1/jspdf.umd.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>-->
+        <!--<script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/jspdf-html2canvas-pro@latest/dist/jspdf-html2canvas-pro.min.js"></script>-->
     </head>
-    <body>
+    <body style="font-family: Signika Negative, Helvetica Neue, Helvetica, Arial, sans-serif">
         <h1>First Colour Picker Prototype</h1>
         <p>Click on the hue and saturation wheels to make your own custom colour scheme!</p>
         <div class="color-picker" id="test-color-picker">
             <div class="preview">
                 <canvas id="darkest"></canvas>
+                <canvas id="darker"></canvas>
                 <canvas id="dark"></canvas>
                 <canvas id="midtone"></canvas>
                 <canvas id="light"></canvas>
+                <canvas id="lighter"></canvas>
                 <canvas id="lightest"></canvas>
             </div>
             <div class="slider-selectors" id="test-color-sliders">
@@ -20,18 +31,231 @@
                 <canvas id="saturation-selector"></canvas>
             </div>
         </div>
-        <div class="color-picker-text-preview" id="test-text-preview">
-            <div class="light-mode-preview" style="padding: 5px 20px">
-                <h2>Light Mode Preview <span class="icon">🔆</span></h2>
-                <p><i>A preview of what this looks like in light mode.</i></p>
-                <h3 class="highlighted" style="padding: 5px 10px">Highlighting Demo</h3>
-                <p>Subheading can be highlighted to separate sections</p>
+        <button id="button-swap-shade-mode">Swap Mode</button>
+        <div class="character-sheet" style="aspect-ratio: 1.4142; width: 90%; margin: auto; padding: 5px 20px; display: flex; border-radius: 10px">
+            <div style="width: 42.5%; vertical-align: top; margin: 5px; padding: 5px">
+                <h1 class="heading">Blades in the Dark</h1>
+                <div style="display: flex; width: 100%">
+                    <div class="text-entry-line" style="width: 50%">
+                        <input id="text-input-player"></input><br/>
+                        <label for="text-input-player"><strong>Player</strong></label>
+                    </div>
+                    <div class="text-entry-line" style="width: 50%">
+                        <input id="text-input-character"></input><br/>
+                        <label for="text-input-character"><strong>Character</strong></label>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 5%; width: 100%">
+                    <div class="text-select-dropdown" style="width: 30%; display: flex">
+                        <label for="text-select-heritage"><strong>Heritage</strong></label>
+                        <select id="text-select-heritage" style="flex: 1">
+                            <option selected value></option>
+                            <option>AKOROS</option>
+                            <option>THE DAGGER ISLES</option>
+                            <option>IRUVIA</option>
+                            <option>SEVEROS</option>
+                            <option>SKOVLAN</option>
+                            <option>TYCHEROS</option>
+                        </select>
+                    </div>
+                    <div class="text-select-dropdown" style="width: 30%; display: flex">
+                        <label for="text-select-background"><strong>Background</strong></label>
+                        <select id="text-select-background" style="flex: 1">
+                            <option selected value></option>
+                            <option>ACADEMIC</option>
+                            <option>LABOR</option>
+                            <option>LAW</option>
+                            <option>TRADE</option>
+                            <option>MILITARY</option>
+                            <option>NOBLE</option>
+                            <option>UNDERWORLD</option>
+                        </select>
+                    </div>
+                    <div class="text-select-dropdown" style="width: 30%; display: flex">
+                        <label for="text-select-vice"><strong>Vice/Purveyor</strong></label>
+                        <select id="text-select-vice" style="flex: 1">
+                            <option selected value></option>
+                            <option>FAITH</option>
+                            <option>GAMBLING</option>
+                            <option>LUXURY</option>
+                            <option>OBLIGATION</option>
+                            <option>PLEASURE</option>
+                            <option>STUPOR</option>
+                            <option>WEIRD</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="display: flex">
+                    <h2 class="inverted"><span class="heading">Stress</span> <span class="dot-track" data-length="8"></span></h2>
+                    <h2 class="inverted"><span class="heading">Trauma</span> <span class="dot-track" data-length="4"></span></h2>
+                <p style="width: 25%">TODO: Trauma Effects (selectable tags or four dropdowns)</p>
+                </div>
+                <p>TODO: Harm (see how well you can do a table already)</p>
+                <p>TODO: Healing (dot track)</p>
+                <p>TODO: Armor Uses (checkboxes)</p>
+                <label for="text-input-notes"><strong>Notes</strong></label>
+                <div class="text-entry-paragraph" id="text-input-notes" style="height: 30em; width: 97.5%; resize: vertical;"></div>
             </div>
-            <div class="dark-mode-preview" style="padding: 5px 20px">
-                <h2>Dark Mode Preview <span class="icon">🌙</span></h2>
-                <p><i>A preview of what this looks like in dark mode.</i></p>
-                <h3 class="highlighted" style="padding: 5px 10px">Highlighting Demo</h3>
-                <p>Subheading can be highlighted to separate sections</p>
+            <div style="display: flex; flex-direction: column; width: 40%;">
+                <div class="highlighted" style="display: inline-block; vertical-align: top; margin: 5px;">
+                    <table style="width: 100%">
+                        <tr>
+                            <td><h1 class="heading">Spider</h1></td>
+                            <td class="heading" style="width: 75%; text-align: right; vertical-align: middle;"><i>A Devious Mastermind</i></td>
+                        </tr>
+                    </table>
+                    <h2 class="deep-highlighted heading">Special Abilities</h2>
+                    <table style="font-size: 0.8em">
+                        <tr>
+                            <td class="icon" style="vertical-align: top">⬤</td>
+                            <td><b>Foresight:</b> <span style="font-weight: lighter">Two times per score you can <b>assist</b> a teammate without paying stress. Tell us how you prepared for this.</span></td>
+                        </tr>
+                        <tr>
+                            <td class="icon" style="vertical-align: top">⬤</td>
+                            <td><b>Calculating:</b> Due to your careful planning, during <b>downtime</b>, you may give yourself or another crew member +1 downtime action.</td>
+                        </tr>
+                        <tr>
+                            <td class="icon" style="vertical-align: top">⬤</td>
+                            <td><b>Connected:</b> During downtime, you get <b>+1 result level</b> when you <b>acquire an asset</b> or <b>reduce heat</b>.</td>
+                        </tr>
+                        <tr>
+                            <td class="icon" style="vertical-align: top">⬤</td>
+                            <td><b>Functioning Vice:</b> When you indulge your vice, you may adjust the dice outcome by 1 or 2 (up or down). An ally who joins in your vice may do the same.</td>
+                        </tr>
+                        <tr>
+                            <td class="icon" style="vertical-align: top">⬤</td>
+                            <td><b>Ghost Contract:</b> When you shake on a deal, you and your partner—human or otherwise—both bear a mark of your oath. If either breaks the contract, they take level 3 harm, "Cursed".</td>
+                        </tr>
+                        <tr>
+                            <td class="icon" style="vertical-align: top">⬤</td>
+                            <td><b>Jail Bird:</b> When <b>incarcerated</b>, your wanted level counts as 1 less, your Tier as 1 more, and you gain +1 faction status with a faction you help on the inside (in addition to your incarceration roll).</td>
+                        </tr>
+                        <tr>
+                            <td class="icon" style="vertical-align: top">⬤</td>
+                            <td><b>Mastermind:</b> You may expend your <b>special armor</b> to protect a teammate, or to <b>push yourself</b> when you gather information or work on a long-term project.</td>
+                        </tr>
+                        <tr>
+                            <td class="icon" style="vertical-align: top">⬤</td>
+                            <td><b>Weaving the Web:</b> You gain <b>+1d</b> to <b>Consort</b> when you <b>gather information</b> on a target for a score. You get <b>+1d</b> to the <b>engagement roll</b> for that operation.</td>
+                        </tr>
+                        <tr>
+                            <td class="icon" style="vertical-align: top">⬤</td>
+                            <td><span class="icon">⬤</span> <span class="icon">⬤</span> <b>Veteran:</b> Choose a special ability from another source.</td>
+                        </tr>
+                    </table>
+                    <div style="display: flex">
+                        <div style="width: 50%">
+                            <h2 class="deep-highlighted heading">Shrewd Friends</h2>
+                            <p><span class="icon">▲</span><span class="icon">▼</span> Salia, an information broker</p>
+                            <p><span class="icon">▲</span><span class="icon">▼</span> Augus, a mater architect</p>
+                            <p><span class="icon">▲</span><span class="icon">▼</span> Jennah, a servant</p>
+                            <p><span class="icon">▲</span><span class="icon">▼</span> Riven, a chemist</p>
+                            <p><span class="icon">▲</span><span class="icon">▼</span> Jeren, a bluecoat archivist</p>
+                        </div>
+                        <div style="width: 50%">
+                            <h2 class="deep-highlighted heading">Items</h2>
+                            <div><span class="icon">◼</span> <i>Fine cover identity</i></div>
+                            <div><span class="icon">◼</span> Fine bottle of whiskey</div>
+                            <div><span class="icon">◼</span> Blueprints</div>
+                            <div><span class="icon">◼</span> <i>Vial of slumber essence</i></div>
+                            <div><span class="icon">◼</span> <i>Concealed palm pistol</i></div>
+                            <div><span class="icon">◼</span> <i>Spiritbane charm</i></div>
+                        </div>
+                    </div>
+                    <h2 class="deep-highlighted heading">XP</h2>
+                    <div style="font-size: 0.75em">
+                        <ul>
+                            <li><i>Every time you roll a desperate action, mark xp in that action's attribute</i></li>
+                        </ul>
+                        <div>At the end of each session, for each item below, mark 1 xp (in your playbook or an attribute) or 2 xp if that item occurred multiple times.</div>
+                        <ul>
+                            <li><i>You addressed a challenge with calculation or conspiracy.</i></li>
+                            <li><i>You expressed your beliefs, drives, heritage, or background.</i></li>
+                            <li><i>You struggled with issues from your vice or traumas during the session.</i></li>
+                        </ul>
+                    </div>
+                </div>
+                <div style="display: flex">
+                    <div style="width: 25%">
+                        <h3>Teamwork</h3>
+                        <div class="highlighted"><b>Assist</b> a teammate</div>
+                        <div class="highlighted">Lead a <b>group action</b></div>
+                        <div class="highlighted"><b>Protect</b> a teammate</div>
+                        <div class="highlighted"><b>Set up</b> a teammate</div>
+                    </div>
+                    <div style="width: 75%">
+                        <h3>Planning & Load</h3>
+                        <div>Choose a plan, provide the <b><i>detail</i></b>.</div>
+                        <div>Choose your <b><i>load</i></b> limit for the operation.</div>
+                        <table>
+                            <tr>
+                                <td class="highlighted"><b>Assault</b>: <i>Point of attack</i></td>
+                                <td class="highlighted"><b>Occult</b>: <i>Arcane power</i></td>
+                            </tr>
+                            <tr>
+                                <td class="highlighted"><b>Deception</b>: <i>Method</i></td>
+                                <td class="highlighted"><b>Social</b>: <i>Connection</i></td>
+                            </tr>
+                            <tr>
+                                <td class="highlighted"><b>Stealth</b>: <i>Entry point</i></td>
+                                <td class="highlighted"><b>Transport</b>: <i>Route</i></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div style="width: 17.5%; margin: 5px; padding: 5px">
+                <p>TODO: Stash (checkbox track)</p>
+                <p>TODO: Coin (checkbox track)</p>
+                <h2 class="inverted"><span class="heading">Playbook</span> <span class="dot-track" data-length="8"></span></h2>
+                <h2 class="inverted"><span class="heading">Insight</span> <span class="dot-track" data-length="6"></span></h2>
+                <div><span class="dot-track" data-length="4"></span> Hunt</div>
+                <div><span class="dot-track" data-length="4"></span> Study</div>
+                <div><span class="dot-track" data-length="4"></span> Survey</div>
+                <div><span class="dot-track" data-length="4"></span> Tinker</div>
+                <h2 class="inverted"><span class="heading">Prowess</span> <span class="dot-track" data-length="6"></span></h2>
+                <div><span class="dot-track" data-length="4"></span> Finesse</div>
+                <div><span class="dot-track" data-length="4"></span> Prowl</div>
+                <div><span class="dot-track" data-length="4"></span> Skirmish</div>
+                <div><span class="dot-track" data-length="4"></span> Wreck</div>
+                <h2 class="inverted"><span class="heading">Resolve</span> <span class="dot-track" data-length="6"></span></h2>
+                <div><span class="dot-track" data-length="4"></span> Attune</div>
+                <div><span class="dot-track" data-length="4"></span> Command</div>
+                <div><span class="dot-track" data-length="4"></span> Consort</div>
+                <div><span class="dot-track" data-length="4"></span> Sway</div>
+                <table class="highlighted">
+                    <tr>
+                        <td><h2 class="heading" style="width: 20%">Load</h2></td>
+                        <td style="vertical-align: middle;"><span class="icon">◆</span> <b>3</b> <i>light</i></td>
+                        <td style="vertical-align: middle;"><span class="icon">◆</span> <b>5</b> <i>normal</i></td>
+                        <td style="vertical-align: middle;"><span class="icon">◆</span> <b>6</b> <i>heavy</i></td>
+                    </tr>
+                </table>
+                <p>TODO: checkboxes for load in heading</p>
+                <div><span class="icon">◼</span> A Blade or Two</div>
+                <div><span class="icon">◼</span> Throwing Knives</div>
+                <div><span class="icon">◼</span> A Pistol <span class="icon">◼</span> A 2<sup>nd</sup> Pistol</div>
+                <div><span class="icon" style="letter-spacing: -5px;">◼<span style="position: relative; bottom: 1px">—</span>◼</span>&nbsp A Large Weapon</div>
+                <div><span class="icon">◼</span> An Unusual Weapon</div>
+                <div><span class="icon" style="letter-spacing: -5px;">◼<span style="position: relative; bottom: 1px">—</span>◼</span>&nbsp Armor <span class="icon" style="letter-spacing: -5px;">◼<span style="position: relative; bottom: 1px">—</span>◼<span style="position: relative; bottom: 1px">—</span>◼</span>&nbsp +Heavy</div>
+                <div><span class="icon">◼</span> Burglary Gear</div>
+                <div><span class="icon" style="letter-spacing: -5px;">◼<span style="position: relative; bottom: 1px">—</span>◼</span>&nbsp Climbing Gear</div>
+                <div><span class="icon">◼</span> Arcane Implements</div>
+                <div><span class="icon">◼</span> Documents</div>
+                <div><span class="icon">◼</span> Subterfuge Supplies</div>
+                <div><span class="icon" style="letter-spacing: -5px;">◼<span style="position: relative; bottom: 1px">—</span>◼</span>&nbsp Demolition Tools</div>
+                <div><span class="icon">◼</span> Tinkering Tools</div>
+                <div><span class="icon">◼</span> Lantern</div>
+                <h3>Gather Information</h3>
+                <ul>
+                    <li><i>What do they want most?</i></li>
+                    <li><i>What should I look out for?</i></li>
+                    <li><i>Where's the leverage here?</i></li>
+                    <li><i>How can I discover [X]?</i></li>
+                    <li><i>What do they intend to do?</i></li>
+                    <li><i>How can I get them to [X]?</i></li>
+                    <li><i>What's really going on here?</i></li>
+                </ul>
             </div>
         </div>
     </body>
