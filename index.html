@@ -3,10 +3,11 @@
     <head>
         <meta charset="UTF-8" />
         <title>Dovecote</title>
-        <link rel="stylesheet" href="style/default_style.css">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Germania+One&family=Playpen+Sans:wght@100..800&family=Signika+Negative:wght@300..700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="style/default_style.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Germania+One&family=Playpen+Sans:wght@100..800&family=Signika+Negative:wght@300..700&display=swap" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Germania+One&family=Playpen+Sans:wght@100..800&family=Signika+Negative:wght@300..700&display=swap" />
         <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.1/jspdf.umd.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>-->
         <!--<script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
@@ -32,7 +33,10 @@
             </div>
         </div>
         <button id="button-swap-shade-mode">Swap Mode</button>
-        <div class="character-sheet" style="aspect-ratio: 1.4142; width: 90%; margin: auto; padding: 5px 20px; display: flex; border-radius: 10px">
+        <button id="save-sheet-button">Save Sheet</button>
+        <button id="load-sheet-button">Load Sheet</button>
+        <div id="character-sheet-builder-target"></div>
+        <!--<div class="character-sheet" style="aspect-ratio: 1.4142; width: 90%; margin: auto; padding: 5px 20px; display: flex; border-radius: 10px">
             <div style="width: 42.5%; vertical-align: top; margin: 5px; padding: 5px">
                 <h1 class="heading">Blades in the Dark</h1>
                 <div style="display: flex; width: 100%">
@@ -257,7 +261,7 @@
                     <li><i>What's really going on here?</i></li>
                 </ul>
             </div>
-        </div>
+        </div>-->
     </body>
-    <script src="scripts/canvas_test.js"></script>
+    <script src="scripts/character_sheet_handler.js"></script>
 </html>
