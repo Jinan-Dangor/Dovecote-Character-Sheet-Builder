@@ -34,7 +34,7 @@ const makePaletteColour = (shade, currentPalette = characterSheet.style.getPrope
 };
 
 // TEST CHARACTER SHEET
-const testSheet = {
+/*const testSheet = {
     type: "root",
     name: "Blades in the Dark - Spider",
     content: {
@@ -1575,7 +1575,7 @@ const testSheet = {
             },
         ],
     },
-};
+};*/
 
 let sheetTemplateData = { name: "Blades in the Dark - Spider" };
 let currentCharacterSheetName = "Test Sheet";
