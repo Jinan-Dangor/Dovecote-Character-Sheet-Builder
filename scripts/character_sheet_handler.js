@@ -1577,7 +1577,7 @@ const testSheet = {
     },
 };
 
-let sheetTemplateData = testSheet;
+let sheetTemplateData = { name: "Blades in the Dark - Spider" };
 let currentCharacterSheetName = "Test Sheet";
 
 // BUILD HTML FROM CHARACTER SHEET OBJECT
@@ -1943,6 +1943,15 @@ const characterSheetBuildSteps = {
 
 let miscIds = 0;
 const buildCharacterSheet = (rootTemplate, parent) => {
+    const noSheetSelectedContent = document.querySelector("#no-sheet-selected");
+    if (!rootTemplate.hasOwnProperty("type")) {
+        noSheetSelectedContent.style.display = "block";
+        const placeholder = document.createElement("div");
+        placeholder.classList.add("character-sheet");
+        return placeholder;
+    } else {
+        noSheetSelectedContent.style.display = "none";
+    }
     miscIds = 0;
     const rootElement = characterSheetBuildSteps["root"].preload(rootTemplate);
     parent.appendChild(rootElement);
@@ -1954,13 +1963,16 @@ const buildCharacterSheet = (rootTemplate, parent) => {
 let characterSheet;
 const rebuildSheet = () => {
     const existingSheet = document.querySelector(".character-sheet");
-    if (existingSheet) {
+    if (existingSheet != null) {
+        console.log("Replaced!");
         const newBuildTarget = document.createElement("div");
         newBuildTarget.id = "character-sheet-builder-target";
         existingSheet.replaceWith(newBuildTarget);
     }
     const target = document.querySelector("#character-sheet-builder-target");
-    const newSheet = buildCharacterSheet(testSheet, target);
+    console.log(target);
+    console.log(sheetTemplateData);
+    const newSheet = buildCharacterSheet(sheetTemplateData, target);
     target.replaceWith(newSheet);
     characterSheet = document.querySelector(".character-sheet");
     characterSheet.style.setProperty("--highlight-mode", "default");
@@ -2005,6 +2017,9 @@ const saveTemplate = () => {
 
 const loadTemplate = () => {
     sheetTemplateData = JSON.parse(localStorage.getItem(`templateStorage::${sheetTemplateData.name}`));
+    rebuildSheet();
+    characterSheet.style.setProperty("--shade-mode", MODE_LIGHT);
+    setPaletteValues(characterSheet);
     styleText();
 };
 

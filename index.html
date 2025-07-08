@@ -15,30 +15,47 @@
         <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/jspdf-html2canvas-pro@latest/dist/jspdf-html2canvas-pro.min.js"></script>-->
     </head>
-    <body style="font-family: Signika Negative, Helvetica Neue, Helvetica, Arial, sans-serif">
-        <h1>First Colour Picker Prototype</h1>
-        <p>Click on the hue and saturation wheels to make your own custom colour scheme!</p>
-        <div class="color-picker" id="test-color-picker">
-            <div class="preview">
-                <canvas id="darkest"></canvas>
-                <canvas id="darker"></canvas>
-                <canvas id="dark"></canvas>
-                <canvas id="midtone"></canvas>
-                <canvas id="light"></canvas>
-                <canvas id="lighter"></canvas>
-                <canvas id="lightest"></canvas>
-            </div>
-            <div class="slider-selectors" id="test-color-sliders">
-                <canvas id="hue-selector"></canvas>
-                <canvas id="saturation-selector"></canvas>
-            </div>
+    <body>
+        <div class="tabs">
+            <button class="tab" data-target="home">Home</button>
+            <button class="tab" data-target="sheet">Sheet</button>
+            <button class="tab" data-target="palette">Palette</button>
         </div>
-        <button id="button-swap-shade-mode">Swap Mode</button>
-        <button id="save-sheet-button">Save Sheet</button>
-        <button id="load-sheet-button">Load Sheet</button>
-        <button id="save-template-button">Save Template</button>
-        <button id="load-template-button">Load Template</button>
-        <div id="character-sheet-builder-target"></div>
+        <div class="tabContent" data-id="home">
+            <p>This is where the home page will go</p>
+        </div>
+        <div class="tabContent" data-id="sheet">
+            <button id="save-sheet-button">Save Sheet</button>
+            <button id="load-sheet-button">Load Sheet</button>
+            <button id="save-template-button">Save Template</button>
+            <button id="load-template-button">Load Template</button>
+            <div id="no-sheet-selected" style="display: none">
+                <h2>No Sheet Selected!</h2>
+                <p>Select or load a sheet to continue.</p>
+            </div>
+            <div id="character-sheet-builder-target"></div>
+        </div>
+        <div class="tabContent" data-id="palette">
+            <h1>First Colour Picker Prototype</h1>
+            <p>Click on the hue and saturation wheels to make your own custom colour scheme!</p>
+            <div class="color-picker" id="test-color-picker">
+                <div class="preview">
+                    <canvas id="darkest"></canvas>
+                    <canvas id="darker"></canvas>
+                    <canvas id="dark"></canvas>
+                    <canvas id="midtone"></canvas>
+                    <canvas id="light"></canvas>
+                    <canvas id="lighter"></canvas>
+                    <canvas id="lightest"></canvas>
+                </div>
+                <div class="slider-selectors" id="test-color-sliders">
+                    <canvas id="hue-selector"></canvas>
+                    <canvas id="saturation-selector"></canvas>
+                </div>
+            </div>
+            <button id="button-swap-shade-mode">Swap Mode</button>
+        </div>
     </body>
+    <script src="scripts/tab_handler.js"></script>
     <script src="scripts/character_sheet_handler.js"></script>
 </html>
