@@ -36,6 +36,7 @@ const makePaletteColour = (shade, currentPalette = characterSheet.style.getPrope
 // TEST CHARACTER SHEET
 const testSheet = {
     type: "root",
+    name: "Blades in the Dark - Spider",
     content: {
         type: "flex",
         spacingMode: "padding",
@@ -1576,37 +1577,8 @@ const testSheet = {
     },
 };
 
-const characterSheetData = {};
-
-let miscIds = 0;
-const addNewSaveData = (element, saveFunc, loadFunc, id) => {
-    if (id == undefined) {
-        id = miscIds;
-        miscIds++;
-    }
-    characterSheetData[id] = {
-        element,
-        saveFunc,
-        loadFunc,
-    };
-};
-
-const saveAllData = () => {
-    let localStorageData = {};
-    Object.keys(characterSheetData).forEach((key) => {
-        characterSheetData[key].value = characterSheetData[key].saveFunc(characterSheetData[key].element);
-        localStorageData[key] = characterSheetData[key].value;
-    });
-    localStorage.setItem("sheetStorage", JSON.stringify(localStorageData));
-};
-
-const loadAllData = () => {
-    const localStorageData = JSON.parse(localStorage.getItem("sheetStorage"));
-    Object.keys(localStorageData).forEach((key) => {
-        characterSheetData[key].value = localStorageData[key];
-        characterSheetData[key].loadFunc(characterSheetData[key].element, characterSheetData[key].value);
-    });
-};
+let sheetTemplateData = testSheet;
+let currentCharacterSheetName = "Test Sheet";
 
 // BUILD HTML FROM CHARACTER SHEET OBJECT
 /*  STEP_PRELOAD:
@@ -1665,6 +1637,20 @@ const applyModes = (template, element) => {
     applySpacingMode(template, element);
     addHighlightMode(template, element);
     addAlignmentMode(template, element);
+};
+
+const characterSheetData = {};
+
+const addNewSaveData = (element, saveFunc, loadFunc, id) => {
+    if (id == undefined) {
+        id = miscIds;
+        miscIds++;
+    }
+    characterSheetData[id] = {
+        element,
+        saveFunc,
+        loadFunc,
+    };
 };
 
 const characterSheetBuildSteps = {
@@ -1746,28 +1732,6 @@ const characterSheetBuildSteps = {
                 newFlex.appendChild(newChild);
                 styleStep(flexChildren[i], newChild);
             }
-
-            /*const parentGlobalSize = isRow
-                ? getComputedStyle(newFlex).getPropertyValue("--global-width") -
-                  (template.hasOwnProperty("spacingMode") ? globalPaddingWidth * ((template.spacingMode.includes("no-left") ? 0 : 1) + (template.spacingMode.includes("no-right") ? 0 : 1)) : 0)
-                : getComputedStyle(newFlex).getPropertyValue("--global-height") -
-                  (template.hasOwnProperty("spacingMode") ? globalPaddingHeight * ((template.spacingMode.includes("no-top") ? 0 : 1) + (template.spacingMode.includes("no-bottom") ? 0 : 1)) : 0);
-            console.log(`Is this a row? ${isRow}. Also its parent's size is ${parentGlobalSize}.`);
-            newFlex.style[isRow ? "width" : "height"] = "100%";
-            newFlex.style.display = "flex";
-            newFlex.style.flexDirection = isRow ? "row" : "column";
-            newFlex.style.alignItems = "center";
-            const childSizes = template.sizes.map((size) => {
-                return size / parentGlobalSize;
-            });
-            for (let i = 0; i < flexChildren.length; i++) {
-                const newChild = preloadStep(flexChildren[i]);
-                const childSizeStyle = `${isRow ? "width" : "height"}: ${childSizes[i] * 100}%; ${isRow ? "height" : "width"}: 100%;`;
-                const childGlobalSizeStyle = `${isRow ? "--global-width" : "--global-height"}: ${template.sizes[i] * parentGlobalSize};`;
-                newChild.style.cssText = `${childSizeStyle} ${childGlobalSizeStyle}`;
-                newFlex.appendChild(newChild);
-                styleStep(flexChildren[i], newChild);
-            }*/
         },
     },
     heading: {
@@ -1977,23 +1941,72 @@ const characterSheetBuildSteps = {
     },
 };
 
+let miscIds = 0;
 const buildCharacterSheet = (rootTemplate, parent) => {
+    miscIds = 0;
     const rootElement = characterSheetBuildSteps["root"].preload(rootTemplate);
     parent.appendChild(rootElement);
     characterSheetBuildSteps["root"].style(rootTemplate, rootElement);
+    miscIds = 0;
     return rootElement;
 };
 
-const target = document.querySelector("#character-sheet-builder-target");
-const newSheet = buildCharacterSheet(testSheet, target);
-target.replaceWith(newSheet);
-const characterSheet = document.querySelector(".character-sheet");
-characterSheet.classList.add("loading");
+let characterSheet;
+const rebuildSheet = () => {
+    const existingSheet = document.querySelector(".character-sheet");
+    if (existingSheet) {
+        const newBuildTarget = document.createElement("div");
+        newBuildTarget.id = "character-sheet-builder-target";
+        existingSheet.replaceWith(newBuildTarget);
+    }
+    const target = document.querySelector("#character-sheet-builder-target");
+    const newSheet = buildCharacterSheet(testSheet, target);
+    target.replaceWith(newSheet);
+    characterSheet = document.querySelector(".character-sheet");
+    characterSheet.style.setProperty("--highlight-mode", "default");
+};
 
-document.fonts.ready.then(() => {
-    characterSheet.classList.remove("loading");
-    characterSheet.classList.add("loaded");
-});
+const applicationStartup = () => {
+    rebuildSheet();
+    characterSheet.classList.add("loading");
+
+    document.fonts.ready.then(() => {
+        characterSheet.classList.remove("loading");
+        characterSheet.classList.add("loaded");
+    });
+
+    characterSheet.style.setProperty("--shade-mode", MODE_LIGHT);
+
+    setPaletteValues(characterSheet);
+    styleText();
+    renderCanvases();
+};
+
+const saveAllData = () => {
+    let localStorageData = {};
+    Object.keys(characterSheetData).forEach((key) => {
+        characterSheetData[key].value = characterSheetData[key].saveFunc(characterSheetData[key].element);
+        localStorageData[key] = characterSheetData[key].value;
+    });
+    localStorage.setItem(`sheetStorage::${currentCharacterSheetName}`, JSON.stringify(localStorageData));
+};
+
+const loadAllData = () => {
+    const localStorageData = JSON.parse(localStorage.getItem(`sheetStorage::${currentCharacterSheetName}`));
+    Object.keys(localStorageData).forEach((key) => {
+        characterSheetData[key].value = localStorageData[key];
+        characterSheetData[key].loadFunc(characterSheetData[key].element, characterSheetData[key].value);
+    });
+};
+
+const saveTemplate = () => {
+    localStorage.setItem(`templateStorage::${sheetTemplateData.name}`, JSON.stringify(sheetTemplateData));
+};
+
+const loadTemplate = () => {
+    sheetTemplateData = JSON.parse(localStorage.getItem(`templateStorage::${sheetTemplateData.name}`));
+    styleText();
+};
 
 const setPaletteValues = (element, mode = characterSheet.style.getPropertyValue("--shade-mode")) => {
     for (let i = 0; i < PALETTE_LIGHTNESS.length; i++) {
@@ -2245,14 +2258,6 @@ const renderCanvases = () => {
     generateSliders();
 };
 
-// PROGRAM START
-characterSheet.style.setProperty("--shade-mode", MODE_LIGHT);
-characterSheet.style.setProperty("--highlight-mode", "default");
-
-setPaletteValues(characterSheet);
-styleText();
-renderCanvases();
-
 const swapShadeModeButton = document.querySelector("#button-swap-shade-mode");
 swapShadeModeButton.addEventListener("click", (e) => {
     if (characterSheet.style.getPropertyValue("--shade-mode") == MODE_LIGHT) {
@@ -2274,12 +2279,14 @@ loadButton.addEventListener("click", (e) => {
     loadAllData();
 });
 
-/*const textPreview = document.getElementById("test-text-preview");
-const lightModePreview = textPreview.querySelector(".light-mode-preview");
-html2PDF(lightModePreview, {
-    jsPDF: {
-        format: "a4",
-    },
-    imageType: "image/jpeg",
-    output: "./pdf/generate.pdf",
-});*/
+const saveTemplateButton = document.querySelector("#save-template-button");
+saveTemplateButton.addEventListener("click", (e) => {
+    saveTemplate();
+});
+
+const loadTemplateButton = document.querySelector("#load-template-button");
+loadTemplateButton.addEventListener("click", (e) => {
+    loadTemplate();
+});
+
+applicationStartup();
