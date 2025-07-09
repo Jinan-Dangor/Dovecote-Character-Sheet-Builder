@@ -108,7 +108,7 @@ const characterSheetBuildSteps = {
         },
         style: (template, element) => {
             const root = element;
-            root.style.cssText = `aspect-ratio: 1.4142; width: 90%; margin: auto; border-radius: 10px; --global-width: 1; --global-height: 1;`;
+            root.style.cssText = `aspect-ratio: 1.4142; width: 90%; margin: auto; border-radius: 20px; --global-width: 1; --global-height: 1;`;
             root.classList.add("character-sheet");
             const child = preloadStep(template.content);
             child.style.width = "100%";
@@ -474,8 +474,12 @@ const applicationStartup = () => {
         characterSheet.classList.add("loaded");
     });
 
-    characterSheet.style.setProperty("--shade-mode", MODE_LIGHT);
-    body.style.setProperty("--shade-mode", MODE_LIGHT);
+    if (body.style.getPropertyValue("--shade-mode")) {
+        characterSheet.style.setProperty("--shade-mode", body.style.getPropertyValue("--shade-mode"));
+    } else {
+        body.style.setProperty("--shade-mode", MODE_LIGHT);
+        characterSheet.style.setProperty("--shade-mode", MODE_LIGHT);
+    }
 
     setAllPaletteValues();
     styleText();
@@ -526,7 +530,11 @@ const loadTemplate = () => {
         sheetTemplateData = JSON.parse(localStorage.getItem(`dovecote-templateStorage::${currentSheet.template}`));
     }
     rebuildSheet();
-    characterSheet.style.setProperty("--shade-mode", MODE_LIGHT);
+    if (body.style.getPropertyValue("--shade-mode")) {
+        characterSheet.style.setProperty("--shade-mode", body.style.getPropertyValue("--shade-mode"));
+    } else {
+        characterSheet.style.setProperty("--shade-mode", MODE_LIGHT);
+    }
     setAllPaletteValues();
     styleText();
 };

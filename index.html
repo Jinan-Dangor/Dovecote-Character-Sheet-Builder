@@ -15,55 +15,68 @@
         <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/jspdf-html2canvas-pro@latest/dist/jspdf-html2canvas-pro.min.js"></script>-->
     </head>
-    <body style="background-color: var(--character-sheet-palette-6); color: var(--character-sheet-palette-0)">
+    <body style="background-color: var(--character-sheet-palette-6); color: var(--character-sheet-palette-0); margin: 0">
         <div class="tabs">
             <button class="tab" data-target="home">Home</button>
             <button class="tab" data-target="sheet">Sheet</button>
             <button class="tab" data-target="palette">Palette</button>
         </div>
         <div class="tabContent" data-id="home">
-            <div style="position: relative">
-                <img id="dovecote-logo" src="assets/dovecote logo.svg" style="display: block; margin: auto; opacity: 100%; width: 30%" />
-                <div
-                    style="
-                        position: absolute;
-                        height: 100%;
-                        width: 30%;
-                        top: 30%;
-                        left: 50%;
-                        transform: translate(-50%, -30%);
-                        border-radius: 10px;
-                        padding: 10px;
-                        background: linear-gradient(180deg, var(--character-sheet-palette-6-faint) 20%, var(--character-sheet-palette-6-transparent) 50%);
-                        text-align: center;
-                    "
-                >
-                    <h1>Dovecote</h1>
-                    <p><b>Create, fill out and share TRPG character sheets.</b></p>
+            <div style="display: flex">
+                <div style="width: 36%; background-color: var(--character-sheet-palette-5); border-radius: 10px; padding: 10px; margin: 0px 0px 20px 30px">
+                    <h2>Make, Send & Receive Templates</h2>
+                    <div id="provided-templates-list">
+                        <h3>Provided Templates</h3>
+                    </div>
+                    <div id="saved-templates">
+                        <h3>Saved Templates</h3>
+                        <p>You currently cannot make and save custom templates. Once this feature is complete you'll be able to load them here!</p>
+                    </div>
+                </div>
+                <div style="position: relative; width: 28%">
+                    <img id="dovecote-logo" src="assets/dovecote logo.svg" style="display: block; margin: auto; opacity: 100%; width: 100%" />
+                    <div
+                        style="
+                            position: absolute;
+                            height: 100%;
+                            width: 100%;
+                            top: 30%;
+                            left: 50%;
+                            transform: translate(-50%, -33%);
+                            border-radius: 10px;
+                            padding: 10px;
+                            background: linear-gradient(180deg, var(--character-sheet-palette-6-faint) 20%, var(--character-sheet-palette-6-transparent) 50%);
+                            text-align: center;
+                        "
+                    >
+                        <h1>Dovecote</h1>
+                        <p style="margin-top: 0"><b>Create, fill out and share TRPG character sheets.</b></p>
+                    </div>
+                </div>
+                <div style="width: 36%; background-color: var(--character-sheet-palette-5); border-radius: 10px; padding: 10px; margin: 0px 30px 20px 0px">
+                    <h2>Your Sheets</h2>
+                    <div id="saved-sheets"></div>
                 </div>
             </div>
-            <div id="saved-sheets">
-                <h2>Saved Sheets</h2>
-            </div>
-            <div id="provided-templates-list">
-                <h2>Provided Templates</h2>
-            </div>
-            <div id="saved-templates">
-                <h2>Saved Templates</h2>
-                <p>You currently cannot make and save custom templates. Once this feature is complete you'll be able to load them here!</p>
+            <div style="background-color: var(--character-sheet-palette-5); height: 6vh; border-radius: 10px; margin: 0px 30px; padding: 2vh">
+                A tool by <a target="_blank" href="https://jinan-dangor.github.io/">Jinan Dangor</a>
             </div>
         </div>
-        <div class="tabContent" data-id="sheet">
-            <button id="save-sheet-button">Save Sheet</button>
+        <div
+            class="tabContent"
+            data-id="sheet"
+            style="background: linear-gradient(0deg, var(--character-sheet-palette-5) 0%, var(--character-sheet-palette-5) 90%, var(--character-sheet-palette-5-transparent) 100%)"
+        >
             <div id="no-sheet-selected" style="display: none">
                 <h2>No Sheet Selected!</h2>
                 <p>Select or load a sheet to continue.</p>
             </div>
+            <button id="save-sheet-button">Save Sheet</button>
             <div id="sheet-name"></div>
             <div id="character-sheet-builder-target"></div>
         </div>
-        <div class="tabContent" data-id="palette">
-            <h1>First Colour Picker Prototype</h1>
+        <div class="tabContent" data-id="palette" style="padding-left: 30px">
+            <h1>Colour Picker</h1>
             <p>Click on the hue and saturation wheels to make your own custom colour scheme!</p>
             <div class="color-picker" id="test-color-picker">
                 <div class="preview">

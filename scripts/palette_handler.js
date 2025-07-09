@@ -43,6 +43,8 @@ const setPaletteValues = (element, mode = element.style.getPropertyValue("--shad
     for (let i = 0; i < PALETTE_LIGHTNESS.length; i++) {
         element.style.setProperty(`--character-sheet-palette-${i}`, makePaletteColour(i, mode));
     }
+    element.style.setProperty(`--character-sheet-palette-5-faint`, makePaletteColour(5, mode, 0.5));
+    element.style.setProperty(`--character-sheet-palette-5-transparent`, makePaletteColour(5, mode, 0));
     element.style.setProperty(`--character-sheet-palette-6-faint`, makePaletteColour(6, mode, 0.5));
     element.style.setProperty(`--character-sheet-palette-6-transparent`, makePaletteColour(6, mode, 0));
 };
@@ -102,7 +104,7 @@ hueSelector.addEventListener("mousedown", function (e) {
     selectedColor.hue = position * maxHue + 30;
     setAllPaletteValues();
     renderCanvases();
-    logo.style.filter = `hue-rotate(${selectedColor.hue - standardHue}deg)`;
+    logo.style.filter = `hue-rotate(${selectedColor.hue - standardHue}deg) saturate(${(selectedColor.saturation / maxSat) * 100}%)`;
 });
 
 saturationSelector.addEventListener("mousedown", function (e) {
@@ -111,6 +113,8 @@ saturationSelector.addEventListener("mousedown", function (e) {
     selectedColor.saturation = position * maxSat;
     setAllPaletteValues();
     renderCanvases();
+    console.log(position);
+    logo.style.filter = `hue-rotate(${selectedColor.hue - standardHue}deg) saturate(${(selectedColor.saturation / maxSat) * 100}%)`;
 });
 
 const swapShadeModeButton = document.querySelector("#button-swap-shade-mode");

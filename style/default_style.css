@@ -13,6 +13,18 @@
     font-family: "Signika Negative", "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
 }
 
+a:visited {
+    color: var(--character-sheet-palette-1);
+}
+
+a:link {
+    color: var(--character-sheet-palette-2);
+}
+
+a:active {
+    color: var(--character-sheet-palette-3);
+}
+
 sup {
     font-size: 0.5vw;
 }
