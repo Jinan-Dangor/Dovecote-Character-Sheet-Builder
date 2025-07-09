@@ -4,15 +4,20 @@ tabContents.forEach((tabContent) => {
     tabContent.style.display = "none";
 });
 tabContents[0].style.display = "block";
+
+const switchTab = (targetTabId) => {
+    tabContents.forEach((tabContent) => {
+        if (tabContent.getAttribute("data-id") == targetTabId) {
+            tabContent.style.display = "block";
+        } else {
+            tabContent.style.display = "none";
+        }
+    });
+};
+
 tabs.forEach((tab) => {
     const targetId = tab.getAttribute("data-target");
     tab.addEventListener("click", (e) => {
-        tabContents.forEach((tabContent) => {
-            if (tabContent.getAttribute("data-id") == targetId) {
-                tabContent.style.display = "block";
-            } else {
-                tabContent.style.display = "none";
-            }
-        });
+        switchTab(targetId);
     });
 });

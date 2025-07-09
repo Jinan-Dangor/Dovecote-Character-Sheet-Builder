@@ -58,3 +58,16 @@ h5 {
 .text-entry-line input {
     font-family: "Playpen Sans", "cursive";
 }
+
+@keyframes fadeEffect {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.tabContent {
+    animation: fadeEffect 1s;
+}

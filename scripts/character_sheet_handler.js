@@ -33,1552 +33,35 @@ const makePaletteColour = (shade, currentPalette = characterSheet.style.getPrope
     return `oklch(${lightness}% ${saturation} ${hue})`;
 };
 
-// TEST CHARACTER SHEET
-/*const testSheet = {
-    type: "root",
-    name: "Blades in the Dark - Spider",
-    content: {
-        type: "flex",
-        spacingMode: "padding",
-        direction: "row",
-        sizes: [0.4, 0.4, 0.19],
-        contents: [
-            {
-                type: "flex",
-                direction: "column",
-                sizes: [0.06, 0.06, 0.04, 0.08, 0.06, 0.2, 0.49],
-                contents: [
-                    {
-                        type: "flex",
-                        direction: "row",
-                        sizes: [0.2, 0.2],
-                        contents: [
-                            {
-                                type: "heading",
-                                spacingMode: "padding",
-                                content: "Blades in the Dark",
-                            },
-                            {
-                                type: "textEntryLine",
-                                spacingMode: "padding",
-                                label: "Crew",
-                            },
-                        ],
-                    },
-                    {
-                        type: "flex",
-                        direction: "row",
-                        sizes: [0.2, 0.2],
-                        contents: [
-                            {
-                                type: "textEntryLine",
-                                spacingMode: "padding",
-                                label: "Name",
-                            },
-                            {
-                                type: "textEntryLine",
-                                spacingMode: "padding",
-                                label: "Alias",
-                            },
-                        ],
-                    },
-                    {
-                        type: "textEntryLine",
-                        spacingMode: "padding",
-                        label: "Look",
-                    },
-                    {
-                        type: "flex",
-                        direction: "row",
-                        sizes: [0.4 / 3, 0.4 / 3, 0.4 / 3],
-                        contents: [
-                            {
-                                type: "textSelectDropdown",
-                                spacingMode: "padding",
-                                label: "Heritage",
-                                options: ["Akoros", "The Dagger Isles", "Truvia", "Severos", "Skovlan", "Tycheros"],
-                            },
-                            {
-                                type: "textSelectDropdown",
-                                spacingMode: "padding",
-                                label: "Background",
-                                options: ["Academic", "Labour", "Law", "Trade", "Military", "Noble", "Underworld"],
-                            },
-                            {
-                                type: "textSelectDropdown",
-                                spacingMode: "padding",
-                                label: "Vice/Purveyor",
-                                options: ["Faith", "Gambling", "Luxury", "Obligation", "Pleasure", "Stupor", "Weird"],
-                            },
-                        ],
-                    },
-                    {
-                        type: "flex",
-                        spacingMode: "padding",
-                        direction: "row",
-                        sizes: [0.19, 0.2],
-                        contents: [
-                            {
-                                type: "flex",
-                                highlightMode: "inverted",
-                                direction: "row",
-                                sizes: [0.1, 0.09],
-                                contents: [
-                                    {
-                                        type: "heading",
-                                        spacingMode: "padding",
-                                        headingSize: "h3",
-                                        content: "Stress",
-                                    },
-                                    {
-                                        type: "iconTrack",
-                                        icon: "⬤",
-                                        length: 8,
-                                    },
-                                ],
-                            },
-                            {
-                                type: "flex",
-                                direction: "row",
-                                sizes: [0.1, 0.1],
-                                contents: [
-                                    {
-                                        type: "flex",
-                                        direction: "column",
-                                        sizes: [0.03 / 2, 0.03 / 2],
-                                        contents: [
-                                            {
-                                                type: "textSelectDropdown",
-                                                spacingMode: "padding",
-                                                options: ["Cold", "Haunted", "Obsessed", "Paranoid", "Reckless", "Soft", "Unstable", "Vicious"],
-                                            },
-                                            {
-                                                type: "textSelectDropdown",
-                                                spacingMode: "padding",
-                                                options: ["Cold", "Haunted", "Obsessed", "Paranoid", "Reckless", "Soft", "Unstable", "Vicious"],
-                                            },
-                                        ],
-                                    },
-                                    {
-                                        type: "flex",
-                                        direction: "column",
-                                        sizes: [0.03 / 2, 0.03 / 2],
-                                        contents: [
-                                            {
-                                                type: "textSelectDropdown",
-                                                spacingMode: "padding",
-                                                options: ["Cold", "Haunted", "Obsessed", "Paranoid", "Reckless", "Soft", "Unstable", "Vicious"],
-                                            },
-                                            {
-                                                type: "textSelectDropdown",
-                                                spacingMode: "padding",
-                                                options: ["Cold", "Haunted", "Obsessed", "Paranoid", "Reckless", "Soft", "Unstable", "Vicious"],
-                                            },
-                                        ],
-                                    },
-                                ],
-                            },
-                        ],
-                    },
-                    {
-                        type: "flex",
-                        spacingMode: "padding",
-                        direction: "row",
-                        sizes: [0.3, 0.09],
-                        contents: [
-                            {
-                                type: "flex",
-                                direction: "column",
-                                sizes: [0.04, 0.05, 0.05, 0.05],
-                                contents: [
-                                    {
-                                        type: "heading",
-                                        spacingMode: "padding",
-                                        highlightMode: "inverted",
-                                        headingSize: "h3",
-                                        content: "Harm",
-                                    },
-                                    {
-                                        type: "flex",
-                                        direction: "row",
-                                        sizes: [0.02, 0.24, 0.04],
-                                        contents: [
-                                            {
-                                                type: "richText",
-                                                highlightMode: "highlighted",
-                                                alignmentMode: "center",
-                                                content: "<b>3</b>",
-                                            },
-                                            {
-                                                type: "textEntryParagraph",
-                                                spacingMode: "padding",
-                                            },
-                                            {
-                                                type: "richText",
-                                                highlightMode: "highlighted",
-                                                alignmentMode: "center",
-                                                content: "<b>Need Help</b>",
-                                            },
-                                        ],
-                                    },
-                                    {
-                                        type: "flex",
-                                        direction: "row",
-                                        sizes: [0.02, 0.12, 0.12, 0.04],
-                                        contents: [
-                                            {
-                                                type: "richText",
-                                                highlightMode: "highlighted",
-                                                alignmentMode: "center",
-                                                content: "<b>2</b>",
-                                            },
-                                            {
-                                                type: "textEntryParagraph",
-                                                spacingMode: "padding",
-                                            },
-                                            {
-                                                type: "textEntryParagraph",
-                                                spacingMode: "padding",
-                                            },
-                                            {
-                                                type: "richText",
-                                                highlightMode: "highlighted",
-                                                alignmentMode: "center",
-                                                content: "<b>-1D</b>",
-                                            },
-                                        ],
-                                    },
-                                    {
-                                        type: "flex",
-                                        direction: "row",
-                                        sizes: [0.02, 0.12, 0.12, 0.04],
-                                        contents: [
-                                            {
-                                                type: "richText",
-                                                highlightMode: "highlighted",
-                                                alignmentMode: "center",
-                                                content: "<b>1</b>",
-                                            },
-                                            {
-                                                type: "textEntryParagraph",
-                                                spacingMode: "padding",
-                                            },
-                                            {
-                                                type: "textEntryParagraph",
-                                                spacingMode: "padding",
-                                            },
-                                            {
-                                                type: "richText",
-                                                highlightMode: "highlighted",
-                                                alignmentMode: "center",
-                                                content: "<b>Less Effect</b>",
-                                            },
-                                        ],
-                                    },
-                                ],
-                            },
-                            {
-                                type: "flex",
-                                direction: "column",
-                                sizes: [0.04, 0.05, 0.04, 0.02, 0.02, 0.02],
-                                contents: [
-                                    {
-                                        type: "heading",
-                                        spacingMode: "padding",
-                                        highlightMode: "inverted",
-                                        headingSize: "h3",
-                                        content: "Healing",
-                                    },
-                                    {
-                                        type: "iconTrack",
-                                        icon: "⬤",
-                                        length: 4,
-                                    },
-                                    {
-                                        type: "heading",
-                                        spacingMode: "padding",
-                                        highlightMode: "inverted",
-                                        headingSize: "h3",
-                                        content: "Armor Uses",
-                                    },
-                                    {
-                                        type: "series",
-                                        spacingMode: "padding",
-                                        contents: [
-                                            {
-                                                type: "icon",
-                                                icon: "◼",
-                                            },
-                                            {
-                                                type: "richText",
-                                                content: "<b>Armor</b>",
-                                            },
-                                        ],
-                                    },
-                                    {
-                                        type: "series",
-                                        spacingMode: "padding",
-                                        contents: [
-                                            {
-                                                type: "icon",
-                                                icon: "◼",
-                                            },
-                                            {
-                                                type: "richText",
-                                                content: "<b>Heavy</b>",
-                                            },
-                                        ],
-                                    },
-                                    {
-                                        type: "series",
-                                        spacingMode: "padding",
-                                        contents: [
-                                            {
-                                                type: "icon",
-                                                icon: "◼",
-                                            },
-                                            {
-                                                type: "richText",
-                                                content: "<b>Special</b>",
-                                            },
-                                        ],
-                                    },
-                                ],
-                            },
-                        ],
-                    },
-                    {
-                        type: "textEntryParagraph",
-                        spacingMode: "padding",
-                        label: "Notes",
-                    },
-                ],
-            },
-            {
-                type: "flex",
-                direction: "column",
-                sizes: [0.8, 0.19],
-                contents: [
-                    {
-                        type: "flex",
-                        highlightMode: "highlighted",
-                        spacingMode: "padding no-top",
-                        direction: "column",
-                        sizes: [0.08, 0.04, 0.375, 0.16, 0.04, 0.1],
-                        contents: [
-                            {
-                                type: "flex",
-                                direction: "row",
-                                sizes: [0.3, 0.09],
-                                contents: [
-                                    {
-                                        type: "heading",
-                                        spacingMode: "padding no-top",
-                                        headingSize: "h1",
-                                        content: "Spider",
-                                    },
-                                    {
-                                        type: "heading",
-                                        alignmentMode: "center",
-                                        headingSize: "h4",
-                                        content: "A Devious Mastermind",
-                                    },
-                                ],
-                            },
-                            {
-                                type: "heading",
-                                spacingMode: "padding",
-                                headingSize: "h3",
-                                highlightMode: "inverted",
-                                content: "Special Abilities",
-                            },
-                            {
-                                type: "series",
-                                spacingMode: "padding",
-                                direction: "column",
-                                contents: [
-                                    {
-                                        type: "flex",
-                                        direction: "row",
-                                        alignItems: "start",
-                                        sizes: [0.01, 0.37],
-                                        contents: [
-                                            {
-                                                type: "icon",
-                                                icon: "⬤",
-                                            },
-                                            {
-                                                type: "richText",
-                                                content: "<b>Foresight</b>: Two times per score you can <b>assist</b> a teammate without paying stress. Tell us how you prepared for this.",
-                                            },
-                                        ],
-                                    },
-                                    {
-                                        type: "flex",
-                                        direction: "row",
-                                        alignItems: "start",
-                                        sizes: [0.01, 0.37],
-                                        contents: [
-                                            {
-                                                type: "icon",
-                                                icon: "⬤",
-                                            },
-                                            {
-                                                type: "richText",
-                                                content: "<b>Calculating</b>: Due to your careful planning, during <b>downtime</b>, you may give yourself or another crew member +1 downtime action.",
-                                            },
-                                        ],
-                                    },
-                                    {
-                                        type: "flex",
-                                        direction: "row",
-                                        alignItems: "start",
-                                        sizes: [0.01, 0.37],
-                                        contents: [
-                                            {
-                                                type: "icon",
-                                                icon: "⬤",
-                                            },
-                                            {
-                                                type: "richText",
-                                                content: "<b>Connected</b>: During downtime, you get <b>+1 result level</b> when you <b>acquire an asset</b> or <b>reduce heat</b>.",
-                                            },
-                                        ],
-                                    },
-                                    {
-                                        type: "flex",
-                                        direction: "row",
-                                        alignItems: "start",
-                                        sizes: [0.01, 0.37],
-                                        contents: [
-                                            {
-                                                type: "icon",
-                                                icon: "⬤",
-                                            },
-                                            {
-                                                type: "richText",
-                                                content:
-                                                    "<b>Functioning Vice</b>: When you indulge your vice, you may adjust the dice outcome by 1 or 2 (up or down). An ally who joins in your vice may do the same.",
-                                            },
-                                        ],
-                                    },
-                                    {
-                                        type: "flex",
-                                        direction: "row",
-                                        alignItems: "start",
-                                        sizes: [0.01, 0.37],
-                                        contents: [
-                                            {
-                                                type: "icon",
-                                                icon: "⬤",
-                                            },
-                                            {
-                                                type: "richText",
-                                                content: `<b>Ghost Contract</b>: When you shake on a deal, you and your partner - human or otherwise - both bear a mark of your oath. If either breaks the contract, they take Level 3 harm, "Cursed".`,
-                                            },
-                                        ],
-                                    },
-                                    {
-                                        type: "flex",
-                                        direction: "row",
-                                        alignItems: "start",
-                                        sizes: [0.01, 0.37],
-                                        contents: [
-                                            {
-                                                type: "icon",
-                                                icon: "⬤",
-                                            },
-                                            {
-                                                type: "richText",
-                                                content:
-                                                    "<b>Jail Bird</b>: When <b>incarcerated</b>, your wanted level counts as 1 less, your Tier as 1 more, and you gain +1 faction status with the faction you help on the inside (in addition to your incarceration roll).",
-                                            },
-                                        ],
-                                    },
-                                    {
-                                        type: "flex",
-                                        direction: "row",
-                                        alignItems: "start",
-                                        sizes: [0.01, 0.37],
-                                        contents: [
-                                            {
-                                                type: "icon",
-                                                icon: "⬤",
-                                            },
-                                            {
-                                                type: "richText",
-                                                content:
-                                                    "<b>Mastermind</b>: You may expend your <b>special armor</b> to protect a teammate, or to <b>push yourself</b> when you gather information or work on a long-term project.",
-                                            },
-                                        ],
-                                    },
-                                    {
-                                        type: "flex",
-                                        direction: "row",
-                                        alignItems: "start",
-                                        sizes: [0.01, 0.37],
-                                        contents: [
-                                            {
-                                                type: "icon",
-                                                icon: "⬤",
-                                            },
-                                            {
-                                                type: "richText",
-                                                content:
-                                                    "<b>Weaving the Web</b>: You gain <b>+1d</b> to <b>Consort</b> when you <b>gather information</b> on a target for a score. You get <b>+1d</b> to the <b>engagement roll</b> for that operation.",
-                                            },
-                                        ],
-                                    },
-                                    {
-                                        type: "flex",
-                                        direction: "row",
-                                        alignItems: "start",
-                                        sizes: [0.03, 0.35],
-                                        contents: [
-                                            {
-                                                type: "iconTrack",
-                                                icon: "⬤",
-                                                length: 3,
-                                            },
-                                            {
-                                                type: "richText",
-                                                content: "<b>Veteran</b>: Choose a special ability from another source.",
-                                            },
-                                        ],
-                                    },
-                                ],
-                            },
-                            {
-                                type: "flex",
-                                direction: "row",
-                                sizes: [0.2, 0.195],
-                                contents: [
-                                    {
-                                        type: "flex",
-                                        direction: "column",
-                                        sizes: [0.04, 0.12],
-                                        contents: [
-                                            {
-                                                type: "heading",
-                                                highlightMode: "inverted",
-                                                spacingMode: "padding",
-                                                headingSize: "h3",
-                                                content: "Shrewd Friends",
-                                            },
-                                            {
-                                                type: "series",
-                                                spacingMode: "padding",
-                                                direction: "column",
-                                                contents: [
-                                                    {
-                                                        type: "series",
-                                                        contents: [
-                                                            {
-                                                                type: "icon",
-                                                                icon: "▲",
-                                                            },
-                                                            {
-                                                                type: "icon",
-                                                                icon: "▼",
-                                                            },
-                                                            {
-                                                                type: "richText",
-                                                                spacingMode: "padding",
-                                                                content: "Salia, an information broker",
-                                                            },
-                                                        ],
-                                                    },
-                                                    {
-                                                        type: "series",
-                                                        contents: [
-                                                            {
-                                                                type: "icon",
-                                                                icon: "▲",
-                                                            },
-                                                            {
-                                                                type: "icon",
-                                                                icon: "▼",
-                                                            },
-                                                            {
-                                                                type: "richText",
-                                                                spacingMode: "padding",
-                                                                content: "Augus, a master architect",
-                                                            },
-                                                        ],
-                                                    },
-                                                    {
-                                                        type: "series",
-                                                        contents: [
-                                                            {
-                                                                type: "icon",
-                                                                icon: "▲",
-                                                            },
-                                                            {
-                                                                type: "icon",
-                                                                icon: "▼",
-                                                            },
-                                                            {
-                                                                type: "richText",
-                                                                spacingMode: "padding",
-                                                                content: "Jennah, a servant ",
-                                                            },
-                                                        ],
-                                                    },
-                                                    {
-                                                        type: "series",
-                                                        contents: [
-                                                            {
-                                                                type: "icon",
-                                                                icon: "▲",
-                                                            },
-                                                            {
-                                                                type: "icon",
-                                                                icon: "▼",
-                                                            },
-                                                            {
-                                                                type: "richText",
-                                                                spacingMode: "padding",
-                                                                content: "Riven, a chemist",
-                                                            },
-                                                        ],
-                                                    },
-                                                    {
-                                                        type: "series",
-                                                        contents: [
-                                                            {
-                                                                type: "icon",
-                                                                icon: "▲",
-                                                            },
-                                                            {
-                                                                type: "icon",
-                                                                icon: "▼",
-                                                            },
-                                                            {
-                                                                type: "richText",
-                                                                spacingMode: "padding",
-                                                                content: "Jeren, a bluecoat archivist",
-                                                            },
-                                                        ],
-                                                    },
-                                                ],
-                                            },
-                                        ],
-                                    },
-                                    {
-                                        type: "flex",
-                                        direction: "column",
-                                        sizes: [0.04, 0.12],
-                                        contents: [
-                                            {
-                                                type: "heading",
-                                                highlightMode: "inverted",
-                                                spacingMode: "padding",
-                                                headingSize: "h3",
-                                                content: "Items",
-                                            },
-                                            {
-                                                type: "series",
-                                                spacingMode: "padding",
-                                                direction: "column",
-                                                contents: [
-                                                    {
-                                                        type: "series",
-                                                        contents: [
-                                                            {
-                                                                type: "icon",
-                                                                icon: "◼",
-                                                            },
-                                                            {
-                                                                type: "richText",
-                                                                spacingMode: "padding",
-                                                                content: "<i>Fine cover identity</i>",
-                                                            },
-                                                        ],
-                                                    },
-                                                    {
-                                                        type: "series",
-                                                        contents: [
-                                                            {
-                                                                type: "icon",
-                                                                icon: "◼",
-                                                            },
-                                                            {
-                                                                type: "richText",
-                                                                spacingMode: "padding",
-                                                                content: "Fine bottle of whiskey",
-                                                            },
-                                                        ],
-                                                    },
-                                                    {
-                                                        type: "series",
-                                                        contents: [
-                                                            {
-                                                                type: "icon",
-                                                                icon: "◼",
-                                                            },
-                                                            {
-                                                                type: "richText",
-                                                                spacingMode: "padding",
-                                                                content: "Blueprints",
-                                                            },
-                                                        ],
-                                                    },
-                                                    {
-                                                        type: "series",
-                                                        contents: [
-                                                            {
-                                                                type: "icon",
-                                                                icon: "◼",
-                                                            },
-                                                            {
-                                                                type: "richText",
-                                                                spacingMode: "padding",
-                                                                content: "<i>Vial of slumber essence</i>",
-                                                            },
-                                                        ],
-                                                    },
-                                                    {
-                                                        type: "series",
-                                                        contents: [
-                                                            {
-                                                                type: "icon",
-                                                                icon: "◼",
-                                                            },
-                                                            {
-                                                                type: "richText",
-                                                                spacingMode: "padding",
-                                                                content: "<i>Concealed palm pistol</i>",
-                                                            },
-                                                        ],
-                                                    },
-                                                    {
-                                                        type: "series",
-                                                        contents: [
-                                                            {
-                                                                type: "icon",
-                                                                icon: "◼",
-                                                            },
-                                                            {
-                                                                type: "richText",
-                                                                spacingMode: "padding",
-                                                                content: "<i>Spiritbane charm</i>",
-                                                            },
-                                                        ],
-                                                    },
-                                                ],
-                                            },
-                                        ],
-                                    },
-                                ],
-                            },
-                            {
-                                type: "heading",
-                                highlightMode: "inverted",
-                                spacingMode: "padding",
-                                headingSize: "h3",
-                                content: "XP",
-                            },
-                            {
-                                type: "series",
-                                spacingMode: "padding",
-                                direction: "column",
-                                contents: [
-                                    {
-                                        type: "richText",
-                                        content: "<i>Every time you roll a desperate action, mark xp in that action's attribute.</i>",
-                                    },
-                                    {
-                                        type: "richText",
-                                        content: "At the end of each session, for each item below, mark 1 xp (in your playbook or an attribute) or 2 xp if that item occurred multiple times.",
-                                    },
-                                    {
-                                        type: "richText",
-                                        content: "<i>You addressed a challenge with calculation or conspiracy.</i>",
-                                    },
-                                    {
-                                        type: "richText",
-                                        content: "<i>You expressed your beliefs, drives, heritage, or background.</i>",
-                                    },
-                                    {
-                                        type: "richText",
-                                        content: "<i>You struggled with issues from your vice or traumas during the session.</i>",
-                                    },
-                                ],
-                            },
-                        ],
-                    },
-                    {
-                        type: "flex",
-                        direction: "row",
-                        sizes: [0.15, 0.24],
-                        contents: [
-                            {
-                                type: "flex",
-                                direction: "column",
-                                sizes: [0.04, 0.15 / 4, 0.15 / 4, 0.15 / 4, 0.15 / 4],
-                                contents: [
-                                    {
-                                        type: "heading",
-                                        spacingMode: "padding",
-                                        headingSize: "h3",
-                                        content: "Teamwork",
-                                    },
-                                    {
-                                        type: "richText",
-                                        highlightMode: "highlighted",
-                                        spacingMode: "padding",
-                                        content: "<b>Assist</b> a teammate",
-                                    },
-                                    {
-                                        type: "richText",
-                                        spacingMode: "padding",
-                                        highlightMode: "highlighted",
-                                        content: "Lead a <b>group action</b>",
-                                    },
-                                    {
-                                        type: "richText",
-                                        spacingMode: "padding",
-                                        highlightMode: "highlighted",
-                                        content: "<b>Protect</b> a teammate",
-                                    },
-                                    {
-                                        type: "richText",
-                                        spacingMode: "padding",
-                                        highlightMode: "highlighted",
-                                        content: "<b>Set up</b> a teammate",
-                                    },
-                                ],
-                            },
-                            {
-                                type: "flex",
-                                direction: "column",
-                                sizes: [0.04, 0.15 / 4, 0.15 / 4, 0.15 / 4, 0.15 / 4],
-                                contents: [
-                                    {
-                                        type: "heading",
-                                        spacingMode: "padding",
-                                        headingSize: "h3",
-                                        content: "Planning & Load",
-                                    },
-                                    {
-                                        type: "richText",
-                                        spacingMode: "padding",
-                                        content: "Choose a plan, provide the <i><b>detail</b></i>.<br>Choose your <i><b>load</b></i> limit for the operation.",
-                                    },
-                                    {
-                                        type: "flex",
-                                        direction: "row",
-                                        sizes: [0.24 / 2, 0.24 / 2],
-                                        contents: [
-                                            {
-                                                type: "richText",
-                                                spacingMode: "padding",
-                                                highlightMode: "highlighted",
-                                                content: "<b>Assault</b>: <i>Point of attack</i>",
-                                            },
-                                            {
-                                                type: "richText",
-                                                spacingMode: "padding",
-                                                highlightMode: "highlighted",
-                                                content: "<b>Occult</b>: <i>Arcane power</i>",
-                                            },
-                                        ],
-                                    },
-                                    {
-                                        type: "flex",
-                                        direction: "row",
-                                        sizes: [0.24 / 2, 0.24 / 2],
-                                        contents: [
-                                            {
-                                                type: "richText",
-                                                spacingMode: "padding",
-                                                highlightMode: "highlighted",
-                                                content: "<b>Deception</b>: <i>Method</i>",
-                                            },
-                                            {
-                                                type: "richText",
-                                                spacingMode: "padding",
-                                                highlightMode: "highlighted",
-                                                content: "<b>Social</b>: <i>Connection</i>",
-                                            },
-                                        ],
-                                    },
-                                    {
-                                        type: "flex",
-                                        direction: "row",
-                                        sizes: [0.24 / 2, 0.24 / 2],
-                                        contents: [
-                                            {
-                                                type: "richText",
-                                                spacingMode: "padding",
-                                                highlightMode: "highlighted",
-                                                content: "<b>Stealth</b>: <i>Entry point</i>",
-                                            },
-                                            {
-                                                type: "richText",
-                                                spacingMode: "padding",
-                                                highlightMode: "highlighted",
-                                                content: "<b>Transport</b>: <i>Route</i>",
-                                            },
-                                        ],
-                                    },
-                                ],
-                            },
-                        ],
-                    },
-                ],
-            },
-            {
-                type: "flex",
-                spacingMode: "padding no-right",
-                direction: "column",
-                sizes: [0.075, 0.04, 0.03, 0.08, 0.03, 0.08, 0.03, 0.08, 0.045, 0.04, 0.26, 0.04, 0.155],
-                contents: [
-                    {
-                        type: "flex",
-                        direction: "row",
-                        sizes: [0.07, 0.125],
-                        contents: [
-                            {
-                                type: "flex",
-                                direction: "column",
-                                sizes: [0.015, 0.02, 0.03],
-                                contents: [
-                                    {
-                                        type: "heading",
-                                        alignmentMode: "right",
-                                        spacingMode: "padding no-left no-top no-bottom",
-                                        headingSize: "h6",
-                                        content: "Stash",
-                                    },
-                                    {
-                                        type: "heading",
-                                        alignmentMode: "center",
-                                        headingSize: "h6",
-                                        content: "Coin",
-                                    },
-                                    {
-                                        type: "iconTrack",
-                                        alignmentMode: "center",
-                                        icon: "◼",
-                                        columns: 2,
-                                        length: 4,
-                                    },
-                                ],
-                            },
-                            {
-                                type: "iconTrack",
-                                icon: "◼",
-                                columns: 10,
-                                length: 40,
-                            },
-                        ],
-                    },
-                    {
-                        type: "flex",
-                        highlightMode: "inverted",
-                        direction: "row",
-                        sizes: [0.1, 0.09],
-                        contents: [
-                            {
-                                type: "heading",
-                                spacingMode: "padding",
-                                headingSize: "h3",
-                                content: "Playbook",
-                            },
-                            {
-                                type: "iconTrack",
-                                icon: "⬤",
-                                length: 8,
-                            },
-                        ],
-                    },
-                    {
-                        type: "flex",
-                        highlightMode: "inverted",
-                        direction: "row",
-                        sizes: [0.12, 0.07],
-                        contents: [
-                            {
-                                type: "heading",
-                                highlightMode: "inverted",
-                                spacingMode: "padding",
-                                headingSize: "h4",
-                                content: "Insight",
-                            },
-                            {
-                                type: "iconTrack",
-                                icon: "⬤",
-                                length: 6,
-                            },
-                        ],
-                    },
-                    {
-                        type: "flex",
-                        direction: "column",
-                        sizes: [0.08 / 2, 0.08 / 2, 0.08 / 2, 0.08 / 2],
-                        contents: [
-                            {
-                                type: "series",
-                                contents: [
-                                    {
-                                        type: "iconTrack",
-                                        icon: "⬤",
-                                        length: 4,
-                                    },
-                                    {
-                                        type: "richText",
-                                        content: "Hunt",
-                                    },
-                                ],
-                            },
-                            {
-                                type: "series",
-                                contents: [
-                                    {
-                                        type: "iconTrack",
-                                        icon: "⬤",
-                                        length: 4,
-                                    },
-                                    {
-                                        type: "richText",
-                                        content: "Study",
-                                    },
-                                ],
-                            },
-                            {
-                                type: "series",
-                                contents: [
-                                    {
-                                        type: "iconTrack",
-                                        icon: "⬤",
-                                        length: 4,
-                                    },
-                                    {
-                                        type: "richText",
-                                        content: "Survey",
-                                    },
-                                ],
-                            },
-                            {
-                                type: "series",
-                                contents: [
-                                    {
-                                        type: "iconTrack",
-                                        icon: "⬤",
-                                        length: 4,
-                                    },
-                                    {
-                                        type: "richText",
-                                        content: "Tinker",
-                                    },
-                                ],
-                            },
-                        ],
-                    },
-                    {
-                        type: "flex",
-                        highlightMode: "inverted",
-                        direction: "row",
-                        sizes: [0.12, 0.07],
-                        contents: [
-                            {
-                                type: "heading",
-                                highlightMode: "inverted",
-                                spacingMode: "padding",
-                                headingSize: "h4",
-                                content: "Prowess",
-                            },
-                            {
-                                type: "iconTrack",
-                                icon: "⬤",
-                                length: 6,
-                            },
-                        ],
-                    },
-                    {
-                        type: "flex",
-                        direction: "column",
-                        sizes: [0.08 / 2, 0.08 / 2, 0.08 / 2, 0.08 / 2],
-                        contents: [
-                            {
-                                type: "series",
-                                contents: [
-                                    {
-                                        type: "iconTrack",
-                                        icon: "⬤",
-                                        length: 4,
-                                    },
-                                    {
-                                        type: "richText",
-                                        content: "Finesse",
-                                    },
-                                ],
-                            },
-                            {
-                                type: "series",
-                                contents: [
-                                    {
-                                        type: "iconTrack",
-                                        icon: "⬤",
-                                        length: 4,
-                                    },
-                                    {
-                                        type: "richText",
-                                        content: "Prowl",
-                                    },
-                                ],
-                            },
-                            {
-                                type: "series",
-                                contents: [
-                                    {
-                                        type: "iconTrack",
-                                        icon: "⬤",
-                                        length: 4,
-                                    },
-                                    {
-                                        type: "richText",
-                                        content: "Skirmish",
-                                    },
-                                ],
-                            },
-                            {
-                                type: "series",
-                                contents: [
-                                    {
-                                        type: "iconTrack",
-                                        icon: "⬤",
-                                        length: 4,
-                                    },
-                                    {
-                                        type: "richText",
-                                        content: "Wreck",
-                                    },
-                                ],
-                            },
-                        ],
-                    },
-                    {
-                        type: "flex",
-                        highlightMode: "inverted",
-                        direction: "row",
-                        sizes: [0.12, 0.07],
-                        contents: [
-                            {
-                                type: "heading",
-                                highlightMode: "inverted",
-                                spacingMode: "padding",
-                                headingSize: "h4",
-                                content: "Resolve",
-                            },
-                            {
-                                type: "iconTrack",
-                                icon: "⬤",
-                                length: 6,
-                            },
-                        ],
-                    },
-                    {
-                        type: "flex",
-                        direction: "column",
-                        sizes: [0.08 / 2, 0.08 / 2, 0.08 / 2, 0.08 / 2],
-                        contents: [
-                            {
-                                type: "series",
-                                contents: [
-                                    {
-                                        type: "iconTrack",
-                                        icon: "⬤",
-                                        length: 4,
-                                    },
-                                    {
-                                        type: "richText",
-                                        content: "Attune",
-                                    },
-                                ],
-                            },
-                            {
-                                type: "series",
-                                contents: [
-                                    {
-                                        type: "iconTrack",
-                                        icon: "⬤",
-                                        length: 4,
-                                    },
-                                    {
-                                        type: "richText",
-                                        content: "Command",
-                                    },
-                                ],
-                            },
-                            {
-                                type: "series",
-                                contents: [
-                                    {
-                                        type: "iconTrack",
-                                        icon: "⬤",
-                                        length: 4,
-                                    },
-                                    {
-                                        type: "richText",
-                                        content: "Consort",
-                                    },
-                                ],
-                            },
-                            {
-                                type: "series",
-                                contents: [
-                                    {
-                                        type: "iconTrack",
-                                        icon: "⬤",
-                                        length: 4,
-                                    },
-                                    {
-                                        type: "richText",
-                                        content: "Sway",
-                                    },
-                                ],
-                            },
-                        ],
-                    },
-                    {
-                        type: "richText",
-                        highlightMode: "highlighted",
-                        spacingMode: "padding",
-                        alignmentMode: "center",
-                        content: "<b>Push Yourself</b> (take 2 stress)<br>-OR- accept a <b>Devil's Bargain</b>.",
-                    },
-                    {
-                        type: "flex",
-                        highlightMode: "inverted",
-                        direction: "row",
-                        sizes: [0.07, 0.12],
-                        contents: [
-                            {
-                                type: "heading",
-                                highlightMode: "inverted",
-                                spacingMode: "padding",
-                                headingSize: "h3",
-                                content: "Load",
-                            },
-                            {
-                                type: "series",
-                                contents: [
-                                    {
-                                        type: "icon",
-                                        icon: "◆",
-                                    },
-                                    {
-                                        type: "richText",
-                                        content: "<b>3</b> <i>light</i>",
-                                    },
-                                    {
-                                        type: "icon",
-                                        icon: "◆",
-                                    },
-                                    {
-                                        type: "richText",
-                                        content: "<b>5</b> <i>normal</i>",
-                                    },
-                                    {
-                                        type: "icon",
-                                        icon: "◆",
-                                    },
-                                    {
-                                        type: "richText",
-                                        content: "<b>6</b> <i>heavy</i>",
-                                    },
-                                ],
-                            },
-                        ],
-                    },
-                    {
-                        type: "series",
-                        spacingMode: "padding",
-                        direction: "column",
-                        contents: [
-                            {
-                                type: "series",
-                                contents: [
-                                    {
-                                        type: "icon",
-                                        conjoined: true,
-                                        icon: "◼",
-                                    },
-                                    {
-                                        type: "richText",
-                                        spacingMode: "padding",
-                                        content: "A Blade or Two",
-                                    },
-                                ],
-                            },
-                            {
-                                type: "series",
-                                contents: [
-                                    {
-                                        type: "icon",
-                                        conjoined: true,
-                                        icon: "◼",
-                                    },
-                                    {
-                                        type: "richText",
-                                        spacingMode: "padding",
-                                        content: "Throwing Knives",
-                                    },
-                                ],
-                            },
-                            {
-                                type: "series",
-                                contents: [
-                                    {
-                                        type: "icon",
-                                        conjoined: true,
-                                        icon: "◼",
-                                    },
-                                    {
-                                        type: "richText",
-                                        spacingMode: "padding",
-                                        content: "A Pistol",
-                                    },
-                                    {
-                                        type: "icon",
-                                        conjoined: true,
-                                        icon: "◼",
-                                    },
-                                    {
-                                        type: "richText",
-                                        spacingMode: "padding",
-                                        content: "A 2<sup>nd</sup> Pistol",
-                                    },
-                                ],
-                            },
-                            {
-                                type: "series",
-                                contents: [
-                                    {
-                                        type: "icon",
-                                        conjoined: true,
-                                        icon: "◼◼",
-                                    },
-                                    {
-                                        type: "richText",
-                                        spacingMode: "padding",
-                                        content: "A Large Weapon",
-                                    },
-                                ],
-                            },
-                            {
-                                type: "series",
-                                contents: [
-                                    {
-                                        type: "icon",
-                                        conjoined: true,
-                                        icon: "◼",
-                                    },
-                                    {
-                                        type: "richText",
-                                        spacingMode: "padding",
-                                        content: "An Unusual Weapon",
-                                    },
-                                ],
-                            },
-                            {
-                                type: "series",
-                                contents: [
-                                    {
-                                        type: "icon",
-                                        conjoined: true,
-                                        icon: "◼◼",
-                                    },
-                                    {
-                                        type: "richText",
-                                        spacingMode: "padding",
-                                        content: "Armor",
-                                    },
-                                    {
-                                        type: "icon",
-                                        conjoined: true,
-                                        icon: "◼◼◼",
-                                    },
-                                    {
-                                        type: "richText",
-                                        spacingMode: "padding",
-                                        content: "+Heavy",
-                                    },
-                                ],
-                            },
-                            {
-                                type: "series",
-                                contents: [
-                                    {
-                                        type: "icon",
-                                        conjoined: true,
-                                        icon: "◼",
-                                    },
-                                    {
-                                        type: "richText",
-                                        spacingMode: "padding",
-                                        content: "Burglary Gear",
-                                    },
-                                ],
-                            },
-                            {
-                                type: "series",
-                                contents: [
-                                    {
-                                        type: "icon",
-                                        conjoined: true,
-                                        icon: "◼◼",
-                                    },
-                                    {
-                                        type: "richText",
-                                        spacingMode: "padding",
-                                        content: "Climbing Gear",
-                                    },
-                                ],
-                            },
-                            {
-                                type: "series",
-                                contents: [
-                                    {
-                                        type: "icon",
-                                        conjoined: true,
-                                        icon: "◼",
-                                    },
-                                    {
-                                        type: "richText",
-                                        spacingMode: "padding",
-                                        content: "Arcane Implements",
-                                    },
-                                ],
-                            },
-                            {
-                                type: "series",
-                                contents: [
-                                    {
-                                        type: "icon",
-                                        conjoined: true,
-                                        icon: "◼",
-                                    },
-                                    {
-                                        type: "richText",
-                                        spacingMode: "padding",
-                                        content: "Documents",
-                                    },
-                                ],
-                            },
-                            {
-                                type: "series",
-                                contents: [
-                                    {
-                                        type: "icon",
-                                        conjoined: true,
-                                        icon: "◼",
-                                    },
-                                    {
-                                        type: "richText",
-                                        spacingMode: "padding",
-                                        content: "Subterfuge Supplies",
-                                    },
-                                ],
-                            },
-                            {
-                                type: "series",
-                                contents: [
-                                    {
-                                        type: "icon",
-                                        conjoined: true,
-                                        icon: "◼◼",
-                                    },
-                                    {
-                                        type: "richText",
-                                        spacingMode: "padding",
-                                        content: "Demolition Tools",
-                                    },
-                                ],
-                            },
-                            {
-                                type: "series",
-                                contents: [
-                                    {
-                                        type: "icon",
-                                        conjoined: true,
-                                        icon: "◼",
-                                    },
-                                    {
-                                        type: "richText",
-                                        spacingMode: "padding",
-                                        content: "Tinkering Tools",
-                                    },
-                                ],
-                            },
-                            {
-                                type: "series",
-                                contents: [
-                                    {
-                                        type: "icon",
-                                        conjoined: true,
-                                        icon: "◼",
-                                    },
-                                    {
-                                        type: "richText",
-                                        spacingMode: "padding",
-                                        content: "Lantern",
-                                    },
-                                ],
-                            },
-                        ],
-                    },
-                    {
-                        type: "heading",
-                        spacingMode: "padding",
-                        headingSize: "h3",
-                        content: "Gather Information",
-                    },
-                    {
-                        type: "series",
-                        spacingMode: "padding",
-                        direction: "column",
-                        contents: [
-                            {
-                                type: "richText",
-                                content: "<i>What do they want most?</i>",
-                            },
-                            {
-                                type: "richText",
-                                content: "<i>What should I look out for?</i>",
-                            },
-                            {
-                                type: "richText",
-                                content: "<i>Where's the leverage here?</i>",
-                            },
-                            {
-                                type: "richText",
-                                content: "<i>How can I discover [X]?</i>",
-                            },
-                            {
-                                type: "richText",
-                                content: "<i>What do they intend to do?</i>",
-                            },
-                            {
-                                type: "richText",
-                                content: "<i>How can I get them to [X]?</i>",
-                            },
-                            {
-                                type: "richText",
-                                content: "<i>What's really going on here?</i>",
-                            },
-                        ],
-                    },
-                ],
-            },
-        ],
-    },
-};*/
+let templateSheetPairings = JSON.parse(localStorage.getItem("dovecote-template-sheet-pairs")) ?? [];
+let templateList = JSON.parse(localStorage.getItem("dovecote-saved-templates")) ?? [];
+let sheetTemplateData = {};
+let currentSheet = {};
 
-let sheetTemplateData = { name: "Blades in the Dark - Spider" };
-let currentCharacterSheetName = "Test Sheet";
+const createNewSheet = (templateName, sheetName) => {
+    templateSheetPairings.push({
+        template: templateName,
+        sheet: sheetName,
+    });
+    localStorage.setItem("dovecote-template-sheet-pairs", JSON.stringify(templateSheetPairings));
+};
+
+const deleteSheet = (sheetName) => {
+    localStorage.removeItem(`dovecote-sheetStorage::${sheetName}`);
+    const sheetIndex = templateSheetPairings.findIndex((pair) => pair.sheet == sheetName);
+    templateSheetPairings.splice(sheetIndex, 1);
+    localStorage.setItem("dovecote-template-sheet-pairs", JSON.stringify(templateSheetPairings));
+};
+
+const setCurrentSheet = (sheetName) => {
+    const sheet = templateSheetPairings.find((pair) => pair.sheet == sheetName);
+    currentSheet = sheet;
+    const sheetNameHeading = document.querySelector("#sheet-name");
+    sheetNameHeading.innerText = `Current Sheet: ${sheetName}`;
+    switchTab("sheet");
+    loadTemplate();
+    loadAllData();
+};
 
 // BUILD HTML FROM CHARACTER SHEET OBJECT
 /*  STEP_PRELOAD:
@@ -1777,7 +260,7 @@ const characterSheetBuildSteps = {
             addNewSaveData(
                 newIcon,
                 (icon) => {
-                    return icon.getAttribute("data-selected");
+                    return icon.getAttribute("data-selected") == "null" ? null : icon.getAttribute("data-selected");
                 },
                 (icon, value) => {
                     const selectedColor = getPaletteColour(PAL_ICON);
@@ -1788,7 +271,8 @@ const characterSheetBuildSteps = {
                     } else {
                         icon.style.textShadow = `0 0 0 ${unselectedColor}`;
                     }
-                }
+                },
+                template.id
             );
         },
     },
@@ -1842,7 +326,8 @@ const characterSheetBuildSteps = {
                             iconTrack.children[i].style.textShadow = `0 0 0 ${unselectedColor}`;
                         }
                     }
-                }
+                },
+                template.id
             );
         },
     },
@@ -1869,7 +354,8 @@ const characterSheetBuildSteps = {
                 },
                 (textEntryLine, value) => {
                     textEntryLine.querySelector("input").value = value;
-                }
+                },
+                template.id
             );
         },
     },
@@ -1901,7 +387,8 @@ const characterSheetBuildSteps = {
                 },
                 (textEntryParagraph, value) => {
                     textEntryParagraph.querySelector("div").innerHTML = value;
-                }
+                },
+                template.id
             );
         },
     },
@@ -1935,7 +422,8 @@ const characterSheetBuildSteps = {
                 },
                 (textSelectDropdown, value) => {
                     textSelectDropdown.querySelector("select").selectedIndex = value;
-                }
+                },
+                template.id
             );
         },
     },
@@ -1964,14 +452,11 @@ let characterSheet;
 const rebuildSheet = () => {
     const existingSheet = document.querySelector(".character-sheet");
     if (existingSheet != null) {
-        console.log("Replaced!");
         const newBuildTarget = document.createElement("div");
         newBuildTarget.id = "character-sheet-builder-target";
         existingSheet.replaceWith(newBuildTarget);
     }
     const target = document.querySelector("#character-sheet-builder-target");
-    console.log(target);
-    console.log(sheetTemplateData);
     const newSheet = buildCharacterSheet(sheetTemplateData, target);
     target.replaceWith(newSheet);
     characterSheet = document.querySelector(".character-sheet");
@@ -1979,6 +464,43 @@ const rebuildSheet = () => {
 };
 
 const applicationStartup = () => {
+    // Homepage Building
+    const providedTemplateListElement = document.querySelector("#provided-templates-list");
+    const templateNameList = Object.keys(providedTemplates);
+    templateNameList.forEach((template) => {
+        const newElement = document.createElement("div");
+        newElement.innerText = template;
+        const createButton = document.createElement("button");
+        createButton.innerText = "Create New Sheet";
+        newElement.appendChild(createButton);
+        const newSheetName = document.createElement("input");
+        newElement.appendChild(newSheetName);
+        createButton.addEventListener("mousedown", () => {
+            createNewSheet(template, newSheetName.value);
+            setCurrentSheet(newSheetName.value);
+        });
+        providedTemplateListElement.appendChild(newElement);
+    });
+    const savedSheetsList = document.querySelector("#saved-sheets");
+    templateSheetPairings.forEach((pair) => {
+        const newSheetElement = document.createElement("div");
+        newSheetElement.innerText = pair.sheet;
+        const loadButton = document.createElement("button");
+        loadButton.innerText = "Load Sheet";
+        newSheetElement.appendChild(loadButton);
+        loadButton.addEventListener("mousedown", () => {
+            setCurrentSheet(pair.sheet);
+        });
+        const deleteButton = document.createElement("button");
+        deleteButton.innerText = "Delete Sheet";
+        newSheetElement.appendChild(deleteButton);
+        deleteButton.addEventListener("mousedown", () => {
+            deleteSheet(pair.sheet);
+        });
+        savedSheetsList.appendChild(newSheetElement);
+    });
+
+    // Character Sheet Building
     rebuildSheet();
     characterSheet.classList.add("loading");
 
@@ -1997,14 +519,21 @@ const applicationStartup = () => {
 const saveAllData = () => {
     let localStorageData = {};
     Object.keys(characterSheetData).forEach((key) => {
-        characterSheetData[key].value = characterSheetData[key].saveFunc(characterSheetData[key].element);
-        localStorageData[key] = characterSheetData[key].value;
+        const newValue = characterSheetData[key].saveFunc(characterSheetData[key].element);
+        if (newValue) {
+            characterSheetData[key].value = newValue;
+            localStorageData[key] = characterSheetData[key].value;
+        }
     });
-    localStorage.setItem(`sheetStorage::${currentCharacterSheetName}`, JSON.stringify(localStorageData));
+    localStorage.setItem(`dovecote-sheetStorage::${currentSheet.sheet}`, JSON.stringify(localStorageData));
 };
 
 const loadAllData = () => {
-    const localStorageData = JSON.parse(localStorage.getItem(`sheetStorage::${currentCharacterSheetName}`));
+    let localStorageData = localStorage.getItem(`dovecote-sheetStorage::${currentSheet.sheet}`);
+    if (localStorageData == null) {
+        return;
+    }
+    localStorageData = JSON.parse(localStorageData);
     Object.keys(localStorageData).forEach((key) => {
         characterSheetData[key].value = localStorageData[key];
         characterSheetData[key].loadFunc(characterSheetData[key].element, characterSheetData[key].value);
@@ -2012,11 +541,24 @@ const loadAllData = () => {
 };
 
 const saveTemplate = () => {
-    localStorage.setItem(`templateStorage::${sheetTemplateData.name}`, JSON.stringify(sheetTemplateData));
+    if (!currentSheet.hasOwnProperty("template")) {
+        console.error("No sheet currently loaded, so cannot save");
+        return;
+    }
+    localStorage.setItem(`dovecote-templateStorage::${currentSheet.template}`, JSON.stringify(sheetTemplateData));
 };
 
 const loadTemplate = () => {
-    sheetTemplateData = JSON.parse(localStorage.getItem(`templateStorage::${sheetTemplateData.name}`));
+    if (!currentSheet.hasOwnProperty("template")) {
+        console.error("No sheet currently loaded, so cannot load");
+        return;
+    }
+
+    if (providedTemplates.hasOwnProperty(currentSheet.template)) {
+        sheetTemplateData = providedTemplates[currentSheet.template];
+    } else {
+        sheetTemplateData = JSON.parse(localStorage.getItem(`dovecote-templateStorage::${currentSheet.template}`));
+    }
     rebuildSheet();
     characterSheet.style.setProperty("--shade-mode", MODE_LIGHT);
     setPaletteValues(characterSheet);
@@ -2287,21 +829,6 @@ swapShadeModeButton.addEventListener("click", (e) => {
 const saveButton = document.querySelector("#save-sheet-button");
 saveButton.addEventListener("click", (e) => {
     saveAllData();
-});
-
-const loadButton = document.querySelector("#load-sheet-button");
-loadButton.addEventListener("click", (e) => {
-    loadAllData();
-});
-
-const saveTemplateButton = document.querySelector("#save-template-button");
-saveTemplateButton.addEventListener("click", (e) => {
-    saveTemplate();
-});
-
-const loadTemplateButton = document.querySelector("#load-template-button");
-loadTemplateButton.addEventListener("click", (e) => {
-    loadTemplate();
 });
 
 applicationStartup();
