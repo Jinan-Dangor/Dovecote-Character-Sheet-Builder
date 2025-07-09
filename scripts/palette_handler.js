@@ -1,6 +1,7 @@
 // INITIALISATION
 var root = document.querySelector(":root");
-let selectedColor = { saturation: 0.3, hue: 120 };
+const standardHue = 123.62;
+let selectedColor = { saturation: 0.3, hue: standardHue };
 const MODE_LIGHT = "light";
 const MODE_DARK = "dark";
 const PAL_STARKEST = 0;
@@ -19,24 +20,36 @@ const maxHue = 360;
 const maxSat = 0.35;
 const hueSteps = 360;
 const satSteps = 35;
+const body = document.querySelector("body");
+const logo = document.querySelector("#dovecote-logo");
 
 const PALETTE_LIGHTNESS = [5, 25, 37.5, 50, 65, 80, 95];
 const PALETTE_SATURATION_MOD = [0.1, 0.3, 0.5, 0.7, 0.5, 0.3, 0.1];
 const PALETTE_HUE_SHIFT = [-90, -60, -30, 0, -30, -60, -90];
-const makePaletteColour = (shade, currentPalette = characterSheet.style.getPropertyValue("--shade-mode")) => {
+const makePaletteColour = (shade, currentPalette, opacity = null) => {
     const paletteLightness = currentPalette == MODE_LIGHT ? PALETTE_LIGHTNESS : [...PALETTE_LIGHTNESS].reverse();
     const paletteSaturationMod = currentPalette == MODE_LIGHT ? PALETTE_SATURATION_MOD : [...PALETTE_SATURATION_MOD].reverse();
     const paletteHueShift = currentPalette == MODE_LIGHT ? PALETTE_HUE_SHIFT : [...PALETTE_HUE_SHIFT].reverse();
     const lightness = paletteLightness[shade];
     const saturation = selectedColor.saturation * paletteSaturationMod[shade];
     const hue = selectedColor.hue + paletteHueShift[shade];
+    if (opacity != null) {
+        return `oklch(${lightness}% ${saturation} ${hue} / ${opacity})`;
+    }
     return `oklch(${lightness}% ${saturation} ${hue})`;
 };
 
-const setPaletteValues = (element, mode = characterSheet.style.getPropertyValue("--shade-mode")) => {
+const setPaletteValues = (element, mode = element.style.getPropertyValue("--shade-mode")) => {
     for (let i = 0; i < PALETTE_LIGHTNESS.length; i++) {
         element.style.setProperty(`--character-sheet-palette-${i}`, makePaletteColour(i, mode));
     }
+    element.style.setProperty(`--character-sheet-palette-6-faint`, makePaletteColour(6, mode, 0.5));
+    element.style.setProperty(`--character-sheet-palette-6-transparent`, makePaletteColour(6, mode, 0));
+};
+
+const setAllPaletteValues = () => {
+    setPaletteValues(characterSheet);
+    setPaletteValues(body);
 };
 
 const getPaletteColour = (shade) => {
@@ -50,7 +63,7 @@ const generatePalette = () => {
         const context = paletteCanvas.getContext("2d");
         context.canvas.width = paletteSize;
         context.canvas.height = paletteSize;
-        context.fillStyle = makePaletteColour(i);
+        context.fillStyle = makePaletteColour(i, characterSheet.style.getPropertyValue("--shade-mode"));
         context.fillRect(0, 0, paletteSize, paletteSize);
     });
 };
@@ -87,15 +100,16 @@ hueSelector.addEventListener("mousedown", function (e) {
     const coords = getCursorPosition(hueSelector, e);
     const position = coords.x / canvasWidth;
     selectedColor.hue = position * maxHue + 30;
-    setPaletteValues(characterSheet);
+    setAllPaletteValues();
     renderCanvases();
+    logo.style.filter = `hue-rotate(${selectedColor.hue - standardHue}deg)`;
 });
 
 saturationSelector.addEventListener("mousedown", function (e) {
     const coords = getCursorPosition(saturationSelector, e);
     const position = coords.x / canvasWidth;
     selectedColor.saturation = position * maxSat;
-    setPaletteValues(characterSheet);
+    setAllPaletteValues();
     renderCanvases();
 });
 
@@ -103,9 +117,13 @@ const swapShadeModeButton = document.querySelector("#button-swap-shade-mode");
 swapShadeModeButton.addEventListener("click", (e) => {
     if (characterSheet.style.getPropertyValue("--shade-mode") == MODE_LIGHT) {
         characterSheet.style.setProperty("--shade-mode", MODE_DARK);
+        body.style.setProperty("--shade-mode", MODE_DARK);
+        logo.src = "assets/dovecote logo dark.svg";
     } else {
         characterSheet.style.setProperty("--shade-mode", MODE_LIGHT);
+        body.style.setProperty("--shade-mode", MODE_LIGHT);
+        logo.src = "assets/dovecote logo.svg";
     }
-    setPaletteValues(characterSheet);
+    setAllPaletteValues();
     renderCanvases();
 });

@@ -15,14 +15,33 @@
         <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/jspdf-html2canvas-pro@latest/dist/jspdf-html2canvas-pro.min.js"></script>-->
     </head>
-    <body>
+    <body style="background-color: var(--character-sheet-palette-6); color: var(--character-sheet-palette-0)">
         <div class="tabs">
             <button class="tab" data-target="home">Home</button>
             <button class="tab" data-target="sheet">Sheet</button>
             <button class="tab" data-target="palette">Palette</button>
         </div>
         <div class="tabContent" data-id="home">
-            <p>This is where the home page will go</p>
+            <div style="position: relative">
+                <img id="dovecote-logo" src="assets/dovecote logo.svg" style="display: block; margin: auto; opacity: 100%; width: 30%" />
+                <div
+                    style="
+                        position: absolute;
+                        height: 100%;
+                        width: 30%;
+                        top: 30%;
+                        left: 50%;
+                        transform: translate(-50%, -30%);
+                        border-radius: 10px;
+                        padding: 10px;
+                        background: linear-gradient(180deg, var(--character-sheet-palette-6-faint) 20%, var(--character-sheet-palette-6-transparent) 50%);
+                        text-align: center;
+                    "
+                >
+                    <h1>Dovecote</h1>
+                    <p><b>Create, fill out and share TRPG character sheets.</b></p>
+                </div>
+            </div>
             <div id="saved-sheets">
                 <h2>Saved Sheets</h2>
             </div>

@@ -475,8 +475,9 @@ const applicationStartup = () => {
     });
 
     characterSheet.style.setProperty("--shade-mode", MODE_LIGHT);
+    body.style.setProperty("--shade-mode", MODE_LIGHT);
 
-    setPaletteValues(characterSheet);
+    setAllPaletteValues();
     styleText();
     renderCanvases();
 };
@@ -526,7 +527,7 @@ const loadTemplate = () => {
     }
     rebuildSheet();
     characterSheet.style.setProperty("--shade-mode", MODE_LIGHT);
-    setPaletteValues(characterSheet);
+    setAllPaletteValues();
     styleText();
 };
 
