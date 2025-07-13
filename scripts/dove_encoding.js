@@ -57,7 +57,9 @@ const retrieveData = () => {
     });
 };
 
-fetch("https://jinan-dangor.github.io/Dovecote-Character-Sheet-Builder/assets/dovecote%icon.png").then(async (response) => {
+sharingImage.src = "assets/dove icon.png";
+
+/*fetch("https://jinan-dangor.github.io/Dovecote-Character-Sheet-Builder/assets/dovecote%icon.png").then(async (response) => {
     const encoder = new TextEncoder();
     const arrayBuffer = await response.arrayBuffer();
     const bufferLength = arrayBuffer.byteLength;
@@ -1727,4 +1729,4 @@ fetch("https://jinan-dangor.github.io/Dovecote-Character-Sheet-Builder/assets/do
     console.log("arrayBuffer", uintArray);
     sharingImage.src = URL.createObjectURL(new Blob([newUintArray], { type: "image/png" }));
     retrieveData();
-});
+});*/
