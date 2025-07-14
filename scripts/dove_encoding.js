@@ -44,11 +44,9 @@ const retrieveData = () => {
                 String.fromCharCode(uintArray[currentByteOffset + 5]) +
                 String.fromCharCode(uintArray[currentByteOffset + 6]) +
                 String.fromCharCode(uintArray[currentByteOffset + 7]);
-            console.log(`Chunk #${chunkNum}, type: ${chunkType}, length: ${chunkLength}`);
             if (chunkType == "tEXt") {
                 const decoder = new TextDecoder();
                 const newArray = new Uint8Array(uintArray.slice(currentByteOffset + 8, currentByteOffset + 8 + chunkLength));
-                console.log(JSON.parse(decoder.decode(newArray)));
             }
             chunkArr.push({ type: chunkType, offset: currentByteOffset });
             currentByteOffset += chunkLength + 12;
@@ -1712,7 +1710,6 @@ fetch("https://jinan-dangor.github.io/Dovecote-Character-Sheet-Builder/assets/do
             String.fromCharCode(uintArray[currentByteOffset + 5]) +
             String.fromCharCode(uintArray[currentByteOffset + 6]) +
             String.fromCharCode(uintArray[currentByteOffset + 7]);
-        console.log(`Chunk #${chunkNum}, type: ${chunkType}, length: ${chunkLength}`);
         chunkArr.push({ type: chunkType, offset: currentByteOffset });
         currentByteOffset += chunkLength + 12;
         chunkNum++;
@@ -1724,7 +1721,6 @@ fetch("https://jinan-dangor.github.io/Dovecote-Character-Sheet-Builder/assets/do
     newUintArray.set(arrayToInsert, finalChunkOffset + 8);
     newUintArray.set(chunkFooter, finalChunkOffset + 8 + arrayToInsert.byteLength);
     newUintArray.set(uintArray.slice(finalChunkOffset), finalChunkOffset + 12 + arrayToInsert.byteLength);
-    console.log("arrayBuffer", uintArray);
     sharingImage.src = URL.createObjectURL(new Blob([newUintArray], { type: "image/png" }));
     retrieveData();
 });
