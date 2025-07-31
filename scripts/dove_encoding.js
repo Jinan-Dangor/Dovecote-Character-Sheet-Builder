@@ -26,8 +26,21 @@ function b64DecodeUnicode(str) {
     );
 }
 
+let encodedString = "";
+const encodeJSON = (unencodedJSON) => {
+    const encoder = new TextEncoder();
+    encodedString = encoder.encode(JSON.stringify(unencodedJSON));
+    return encodedString;
+};
+
+let decodedString = "";
+const decodeJSON = (encodedJSON) => {
+    const decoder = new TextDecoder();
+    decodedString = JSON.parse(decoder.decode(encodedJSON));
+    return decodedString;
+};
+
 const retrieveDataThroughMetadata = async (imageSrc = sharingImage.src) => {
-    console.log(`Retrieving from ${imageSrc}`);
     return await fetch(imageSrc).then(async (response) => {
         const arrayBuffer = await response.arrayBuffer();
         const bufferLength = arrayBuffer.byteLength;
@@ -46,7 +59,6 @@ const retrieveDataThroughMetadata = async (imageSrc = sharingImage.src) => {
                 String.fromCharCode(uintArray[currentByteOffset + 5]) +
                 String.fromCharCode(uintArray[currentByteOffset + 6]) +
                 String.fromCharCode(uintArray[currentByteOffset + 7]);
-            console.log(chunkType);
             if (chunkType == "tEXt") {
                 const decoder = new TextDecoder();
                 const newArray = new Uint8Array(uintArray.slice(currentByteOffset + 8, currentByteOffset + 8 + chunkLength));
@@ -60,7 +72,6 @@ const retrieveDataThroughMetadata = async (imageSrc = sharingImage.src) => {
 };
 
 const retrieveDataThroughSteganography = async (imageSrc = sharingImage.src) => {
-    console.log(`Retrieving from ${imageSrc}`);
     return await fetch(imageSrc).then(async (response) => {
         const newCanvas = document.createElement("canvas");
         newCanvas.width = 360;
@@ -68,40 +79,35 @@ const retrieveDataThroughSteganography = async (imageSrc = sharingImage.src) => 
         const newImage = new Image();
         const ctx = newCanvas.getContext("2d");
         const fetchedImage = await response.blob();
-        const imageSrcURL = await URL.createObjectURL(fetchedImage);
+        const imageSrcURL = URL.createObjectURL(fetchedImage);
         newImage.src = imageSrcURL;
         newImage.addEventListener("load", async (e) => {
             ctx.drawImage(newImage, 0, 0, 360, 360);
             const imageData = ctx.getImageData(0, 0, 360, 360);
-            console.log(imageData.data);
 
             let readingOffset = 0;
             let readingLength = 4;
             const readData = [];
-            for (let y = 0; y < 360; y++) {
-                for (let x = 0; x < 360; x++) {
-                    for (let i = 0; i < 2; i++) {
-                        if (readingOffset == 4) {
-                            const messageLength = readData[0] * Math.pow(2, 24) + readData[1] * Math.pow(2, 16) + readData[2] * Math.pow(2, 8) + readData[3];
-                            readingLength = messageLength;
-                            console.log(`Incoming message is ${messageLength} long`);
-                        }
-                        if (readingOffset < readingLength + 4) {
-                            //console.log(`Result: ${imageData.data[y * 360 * 4 + x * 4 + i * 2]}`);
-                            //console.log(`Result: ${imageData.data[y * 360 * 4 + x * 4 + i * 2 + 1]}`);
-                            const firstHalf = imageData.data[y * 360 * 4 + x * 4 + i * 2] % 2 ** 4;
-                            const secondHalf = imageData.data[y * 360 * 4 + x * 4 + i * 2 + 1] % 2 ** 4;
-                            //console.log(`First half ${firstHalf}, second half ${secondHalf}`);
-                            readData.push(firstHalf * 2 ** 4 + secondHalf);
-                            readingOffset++;
-                        }
+            let currentPair = [];
+            for (let i = 0; i < imageData.data.length; i++) {
+                if (i % 4 == 3) {
+                    continue;
+                }
+                if (readingOffset == 4) {
+                    const messageLength = readData[0] * 2 ** 24 + readData[1] * 2 ** 16 + readData[2] * 2 ** 8 + readData[3];
+                    readingLength = messageLength;
+                }
+                if (readingOffset < readingLength + 4) {
+                    currentPair.push(imageData.data[i] % 2 ** 4);
+                    if (currentPair.length == 2) {
+                        readData.push(currentPair[0] * 2 ** 4 + currentPair[1]);
+                        readingOffset++;
+                        currentPair = [];
                     }
                 }
             }
             const readDataBuffer = Uint8Array.from(readData.slice(4));
-            const decoder = new TextDecoder();
-            console.log(readDataBuffer);
-            console.log(decoder.decode(readDataBuffer));
+            sheetImported(decodeJSON(readDataBuffer));
         });
     });
 };
@@ -134,7 +140,6 @@ const encodeUsingMetadata = async () => {
                 String.fromCharCode(uintArray[currentByteOffset + 5]) +
                 String.fromCharCode(uintArray[currentByteOffset + 6]) +
                 String.fromCharCode(uintArray[currentByteOffset + 7]);
-            console.log(`${chunkType}: length ${chunkLength}`);
             chunkArr.push({ type: chunkType, offset: currentByteOffset });
             currentByteOffset += chunkLength + 12;
             chunkNum++;
@@ -161,8 +166,7 @@ const encodeUsingSteganography = async () => {
         const imageSrcURL = await URL.createObjectURL(fetchedImage);
         newImage.src = imageSrcURL;
         newImage.addEventListener("load", async (e) => {
-            const encoder = new TextEncoder();
-            const arrayToInsert = encoder.encode(JSON.stringify("Hello world!*" /*providedTemplates["Blades in the Dark - Cutter"]*/));
+            const arrayToInsert = encodeJSON(providedTemplates["Blades in the Dark - Cutter"]);
             let chunkHeaderLength = new Uint8Array(new BigUint64Array([BigInt(arrayToInsert.length)]).buffer);
             chunkHeaderLength.reverse();
             chunkHeaderLength = chunkHeaderLength.slice(4);
@@ -184,12 +188,6 @@ const encodeUsingSteganography = async () => {
                 halfBytes[nextHalfByteToPush] = lowerHalfByte;
                 nextHalfByteToPush++;
             });
-            console.log("Inserting length of message");
-            console.log(chunkHeaderLength);
-            console.log("Then message");
-            console.log(arrayToInsert);
-            console.log("As half bytes:");
-            console.log(halfBytes);
 
             ctx.drawImage(newImage, 0, 0, 360, 360);
             const imageData = ctx.getImageData(0, 0, 360, 360);
@@ -197,31 +195,19 @@ const encodeUsingSteganography = async () => {
 
             let writingOffset = 0;
             for (let i = 0; i < data.length; i++) {
+                if (i % 4 == 3) {
+                    continue;
+                }
                 if (writingOffset < (arrayToInsert.length + chunkHeaderLength.length) * 2) {
-                    //console.log(`Initially: ${imageData.data[i]}`);
                     data[i] -= data[i] % 2 ** 4;
                     data[i] += halfBytes[writingOffset];
-                    //console.log(`Result: ${data[i] % 2 ** 4}`);
-                    //console.log(`Result: ${data[i] % 2 ** 4} == ${halfBytes[writingOffset]}`);
                     writingOffset++;
                 }
             }
 
             ctx.putImageData(imageData, 0, 0);
 
-            const testImageData = ctx.getImageData(0, 0, 360, 360);
-            const testData = testImageData.data;
-
-            writingOffset = 0;
-            for (let i = 0; i < data.length; i++) {
-                if (writingOffset < (arrayToInsert.length + chunkHeaderLength.length) * 2) {
-                    console.log(testData[i] % 2 ** 4);
-                    writingOffset++;
-                }
-            }
-
             sharingImage.src = newCanvas.toDataURL("image/png");
-            retrieveDataThroughSteganography();
         });
     });
 };
@@ -234,7 +220,6 @@ exportSheetButton.addEventListener("mousedown", () => {
                 "image/png": response.blob(),
             }),
         ]);
-        console.log("Image copied!");
     });
 });
 
@@ -256,10 +241,7 @@ importSheetButton.addEventListener("mousedown", () => {
                 const blob = await item.getType("image/png");
                 const pastedImage = URL.createObjectURL(blob);
                 imageDemo.src = pastedImage;
-                const guaranteedData = await retrieveDataThroughSteganography();
-                const newData = await retrieveDataThroughSteganography(pastedImage);
-                console.log(guaranteedData);
-                console.log(newData);
+                retrieveDataThroughSteganography(pastedImage);
             } else {
                 console.error("Clipboard does not contain a PNG.");
             }
@@ -267,5 +249,10 @@ importSheetButton.addEventListener("mousedown", () => {
     });
     openModal(modalContent, []);
 });
+
+const sheetImported = (sheet) => {
+    console.log(`Sheet retrieved!`);
+    console.log(sheet);
+};
 
 encodeUsingSteganography();
