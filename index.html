@@ -33,6 +33,8 @@
                         <h3>Saved Templates</h3>
                         <p>You currently cannot make and save custom templates. Once this feature is complete you'll be able to load them here!</p>
                     </div>
+                    <h3>Import a Sheet</h3>
+                    <button id="import-sheet-button">Click here to import a sheet</button>
                 </div>
                 <div style="position: relative; width: 28%">
                     <img id="dovecote-logo" src="assets/dovecote logo.svg" style="display: block; margin: auto; opacity: 100%; width: 100%" />
@@ -99,10 +101,17 @@
         <div class="tabContent" data-id="encoding" style="padding-left: 30px">
             <h1>Encoding Test</h1>
             <img id="sharingImage" />
+            <button id="copy-sharing-image">Copy Image</button>
+        </div>
+        <div id="modal-shadow" style="display: none"></div>
+        <div id="modal" style="display: none">
+            <div id="modal-content"></div>
+            <div id="modal-options"></div>
         </div>
     </body>
     <script src="scripts/dove_encoding.js"></script>
     <script src="scripts/palette_handler.js"></script>
+    <script src="scripts/modal_handler.js"></script>
     <script src="scripts/tab_handler.js"></script>
     <script src="scripts/provided_sheets.js"></script>
     <script src="scripts/character_sheet_handler.js"></script>
