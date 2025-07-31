@@ -98,7 +98,7 @@ const retrieveDataThroughSteganography = async (imageSrc = sharingImage.src) => 
                     }
                 }
             }
-            const readDataBuffer = Uint8Array.from(readData);
+            const readDataBuffer = Uint8Array.from(readData.slice(4));
             const decoder = new TextDecoder();
             console.log(readDataBuffer);
             console.log(decoder.decode(readDataBuffer));
@@ -151,7 +151,7 @@ const encodeUsingMetadata = async () => {
 };
 
 const encodeUsingSteganography = async () => {
-    fetch("https://jinan-dangor.github.io/Dovecote-Character-Sheet-Builder/assets/dove%20icon%20no%20transparency.png").then(async (response) => {
+    fetch("https://jinan-dangor.github.io/Dovecote-Character-Sheet-Builder/assets/dove%20icon.png").then(async (response) => {
         const newCanvas = document.createElement("canvas");
         newCanvas.width = 360;
         newCanvas.height = 360;
@@ -197,16 +197,12 @@ const encodeUsingSteganography = async () => {
 
             let writingOffset = 0;
             for (let i = 0; i < data.length; i++) {
-                if (i % 4 == 3) {
-                    continue;
-                }
-                if (/*writingOffset < (arrayToInsert.length + chunkHeaderLength.length) * 2*/ true) {
-                    //console.log(`Initially: ${imageData.data[y * 360 * 4 + x * 4 + i]}`);
-                    //data[y * 360 * 4 + x * 4 + i] -= data[y * 360 * 4 + x * 4 + i] % 2 ** 4;
-                    //data[y * 360 * 4 + x * 4 + i] += halfBytes[writingOffset];
-                    data[i] = data[i] / 2;
-                    //console.log(`Result: ${data[y * 360 * 4 + x * 4 + i] % 2 ** 4}`);
-                    //console.log(`Result: ${data[y * 360 * 4 + x * 4 + i] % 2 ** 4} == ${halfBytes[writingOffset]}`);
+                if (writingOffset < (arrayToInsert.length + chunkHeaderLength.length) * 2) {
+                    //console.log(`Initially: ${imageData.data[i]}`);
+                    data[i] -= data[i] % 2 ** 4;
+                    data[i] += halfBytes[writingOffset];
+                    //console.log(`Result: ${data[i] % 2 ** 4}`);
+                    //console.log(`Result: ${data[i] % 2 ** 4} == ${halfBytes[writingOffset]}`);
                     writingOffset++;
                 }
             }
@@ -219,13 +215,13 @@ const encodeUsingSteganography = async () => {
             writingOffset = 0;
             for (let i = 0; i < data.length; i++) {
                 if (writingOffset < (arrayToInsert.length + chunkHeaderLength.length) * 2) {
-                    console.log(testData[i]);
+                    console.log(testData[i] % 2 ** 4);
                     writingOffset++;
                 }
             }
 
             sharingImage.src = newCanvas.toDataURL("image/png");
-            //retrieveDataThroughSteganography();
+            retrieveDataThroughSteganography();
         });
     });
 };
