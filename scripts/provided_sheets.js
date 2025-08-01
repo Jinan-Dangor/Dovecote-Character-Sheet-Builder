@@ -2054,11 +2054,16 @@ const providedTemplates = {
                                             type: "flex",
                                             direction: "row",
                                             alignItems: "start",
-                                            sizes: [0.01, 0.37],
+                                            sizes: [0.01, 0.01, 0.36],
                                             contents: [
                                                 {
                                                     type: "icon",
                                                     id: "special-ability-3",
+                                                    icon: "⬤",
+                                                },
+                                                {
+                                                    type: "icon",
+                                                    id: "special-ability-3-hound-bonus",
                                                     icon: "⬤",
                                                 },
                                                 {
