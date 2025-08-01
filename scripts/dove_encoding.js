@@ -3,75 +3,20 @@ const imageHeight = 360;
 const sharingImage = document.getElementById("sharingImage");
 sharingImage.style.width = imageWidth;
 sharingImage.style.height = imageHeight;
-const invisibleElements = document.getElementById("invisible-encoding-elements");
 
-// base64 encoding solution found here:
-// https://stackoverflow.com/questions/30106476/using-javascripts-atob-to-decode-base64-doesnt-properly-decode-utf-8-strings
-function b64EncodeUnicode(str) {
-    return btoa(
-        encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function toSolidBytes(match, p1) {
-            return String.fromCharCode("0x" + p1);
-        })
-    );
-}
-
-function b64DecodeUnicode(str) {
-    return decodeURIComponent(
-        atob(str)
-            .split("")
-            .map(function (c) {
-                return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-            })
-            .join("")
-    );
-}
-
-let encodedString = "";
 const encodeJSON = (unencodedJSON) => {
     const encoder = new TextEncoder();
-    encodedString = encoder.encode(JSON.stringify(unencodedJSON));
+    const encodedString = encoder.encode(JSON.stringify(unencodedJSON));
     return encodedString;
 };
 
-let decodedString = "";
 const decodeJSON = (encodedJSON) => {
     const decoder = new TextDecoder();
-    decodedString = JSON.parse(decoder.decode(encodedJSON));
+    const decodedString = JSON.parse(decoder.decode(encodedJSON));
     return decodedString;
 };
 
-const retrieveDataThroughMetadata = async (imageSrc = sharingImage.src) => {
-    return await fetch(imageSrc).then(async (response) => {
-        const arrayBuffer = await response.arrayBuffer();
-        const bufferLength = arrayBuffer.byteLength;
-        const uintArray = new Uint8Array(arrayBuffer, 0, bufferLength);
-        let currentByteOffset = 8;
-        let chunkNum = 1;
-        const chunkArr = [];
-        while (currentByteOffset < bufferLength - 1) {
-            const chunkLength =
-                uintArray[currentByteOffset] * Math.pow(2, 24) +
-                uintArray[currentByteOffset + 1] * Math.pow(2, 16) +
-                uintArray[currentByteOffset + 2] * Math.pow(2, 8) +
-                uintArray[currentByteOffset + 3];
-            const chunkType =
-                String.fromCharCode(uintArray[currentByteOffset + 4]) +
-                String.fromCharCode(uintArray[currentByteOffset + 5]) +
-                String.fromCharCode(uintArray[currentByteOffset + 6]) +
-                String.fromCharCode(uintArray[currentByteOffset + 7]);
-            if (chunkType == "tEXt") {
-                const decoder = new TextDecoder();
-                const newArray = new Uint8Array(uintArray.slice(currentByteOffset + 8, currentByteOffset + 8 + chunkLength));
-                return decoder.decode(newArray);
-            }
-            chunkArr.push({ type: chunkType, offset: currentByteOffset });
-            currentByteOffset += chunkLength + 12;
-            chunkNum++;
-        }
-    });
-};
-
-const retrieveDataThroughSteganography = async (imageSrc = sharingImage.src) => {
+const retrieveDataThroughSteganography = async (imageSrc, onDataRetrieved) => {
     return await fetch(imageSrc).then(async (response) => {
         const newCanvas = document.createElement("canvas");
         newCanvas.width = 360;
@@ -107,55 +52,12 @@ const retrieveDataThroughSteganography = async (imageSrc = sharingImage.src) => 
                 }
             }
             const readDataBuffer = Uint8Array.from(readData.slice(4));
-            sheetImported(decodeJSON(readDataBuffer));
+            onDataRetrieved(decodeJSON(readDataBuffer));
         });
     });
 };
 
-const encodeUsingMetadata = async () => {
-    fetch("https://jinan-dangor.github.io/Dovecote-Character-Sheet-Builder/assets/dove%20icon.png").then(async (response) => {
-        const encoder = new TextEncoder();
-        const arrayBuffer = await response.arrayBuffer();
-        const bufferLength = arrayBuffer.byteLength;
-        const uintArray = new Uint8Array(arrayBuffer, 0, bufferLength);
-        const arrayToInsert = encoder.encode(JSON.stringify(providedTemplates["Blades in the Dark - Cutter"]));
-        let chunkHeaderLength = new Uint8Array(new BigUint64Array([BigInt(arrayToInsert.length)]).buffer);
-        chunkHeaderLength.reverse();
-        chunkHeaderLength = chunkHeaderLength.slice(4);
-        const newChunkType = "tEXt";
-        const chunkHeaderType = new Uint8Array([newChunkType.charCodeAt(0), newChunkType.charCodeAt(1), newChunkType.charCodeAt(2), newChunkType.charCodeAt(0)]);
-        const chunkFooter = new Uint8Array([28, 41, 28, 163]);
-        const newUintArray = new Uint8Array(bufferLength + arrayToInsert.byteLength + 12);
-        let currentByteOffset = 8;
-        let chunkNum = 1;
-        const chunkArr = [];
-        while (currentByteOffset < bufferLength - 1) {
-            const chunkLength =
-                uintArray[currentByteOffset] * Math.pow(2, 24) +
-                uintArray[currentByteOffset + 1] * Math.pow(2, 16) +
-                uintArray[currentByteOffset + 2] * Math.pow(2, 8) +
-                uintArray[currentByteOffset + 3];
-            const chunkType =
-                String.fromCharCode(uintArray[currentByteOffset + 4]) +
-                String.fromCharCode(uintArray[currentByteOffset + 5]) +
-                String.fromCharCode(uintArray[currentByteOffset + 6]) +
-                String.fromCharCode(uintArray[currentByteOffset + 7]);
-            chunkArr.push({ type: chunkType, offset: currentByteOffset });
-            currentByteOffset += chunkLength + 12;
-            chunkNum++;
-        }
-        const finalChunkOffset = chunkArr[chunkArr.length - 1].offset;
-        newUintArray.set(uintArray.slice(0, finalChunkOffset));
-        newUintArray.set(chunkHeaderLength, finalChunkOffset);
-        newUintArray.set(chunkHeaderType, finalChunkOffset + 4);
-        newUintArray.set(arrayToInsert, finalChunkOffset + 8);
-        newUintArray.set(chunkFooter, finalChunkOffset + 8 + arrayToInsert.byteLength);
-        newUintArray.set(uintArray.slice(finalChunkOffset), finalChunkOffset + 12 + arrayToInsert.byteLength);
-        sharingImage.src = URL.createObjectURL(new Blob([newUintArray], { type: "image/png" }));
-    });
-};
-
-const encodeUsingSteganography = async () => {
+const encodeUsingSteganography = async (objectToEncode) => {
     fetch("https://jinan-dangor.github.io/Dovecote-Character-Sheet-Builder/assets/dove%20icon.png").then(async (response) => {
         const newCanvas = document.createElement("canvas");
         newCanvas.width = 360;
@@ -166,7 +68,7 @@ const encodeUsingSteganography = async () => {
         const imageSrcURL = await URL.createObjectURL(fetchedImage);
         newImage.src = imageSrcURL;
         newImage.addEventListener("load", async (e) => {
-            const arrayToInsert = encodeJSON(providedTemplates["Blades in the Dark - Cutter"]);
+            const arrayToInsert = encodeJSON(objectToEncode);
             let chunkHeaderLength = new Uint8Array(new BigUint64Array([BigInt(arrayToInsert.length)]).buffer);
             chunkHeaderLength.reverse();
             chunkHeaderLength = chunkHeaderLength.slice(4);
@@ -241,7 +143,9 @@ importSheetButton.addEventListener("mousedown", () => {
                 const blob = await item.getType("image/png");
                 const pastedImage = URL.createObjectURL(blob);
                 imageDemo.src = pastedImage;
-                retrieveDataThroughSteganography(pastedImage);
+                retrieveDataThroughSteganography(pastedImage, (result) => {
+                    console.log(result);
+                });
             } else {
                 console.error("Clipboard does not contain a PNG.");
             }
@@ -249,10 +153,3 @@ importSheetButton.addEventListener("mousedown", () => {
     });
     openModal(modalContent, []);
 });
-
-const sheetImported = (sheet) => {
-    console.log(`Sheet retrieved!`);
-    console.log(sheet);
-};
-
-encodeUsingSteganography();
