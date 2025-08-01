@@ -57,7 +57,7 @@ const retrieveDataThroughSteganography = async (imageSrc, onDataRetrieved) => {
     });
 };
 
-const encodeUsingSteganography = async (objectToEncode) => {
+const encodeUsingSteganography = async (objectToEncode, onEncoded) => {
     fetch("https://jinan-dangor.github.io/Dovecote-Character-Sheet-Builder/assets/dove%20icon.png").then(async (response) => {
         const newCanvas = document.createElement("canvas");
         newCanvas.width = 360;
@@ -110,20 +110,22 @@ const encodeUsingSteganography = async (objectToEncode) => {
             ctx.putImageData(imageData, 0, 0);
 
             sharingImage.src = newCanvas.toDataURL("image/png");
+            onEncoded();
         });
     });
 };
 
-const exportSheetButton = document.getElementById("copy-sharing-image");
-exportSheetButton.addEventListener("mousedown", () => {
-    fetch(sharingImage.src).then((response) => {
-        navigator.clipboard.write([
-            new ClipboardItem({
-                "image/png": response.blob(),
-            }),
-        ]);
+const exportSheet = (sheet) => {
+    encodeUsingSteganography(sheet, () => {
+        fetch(sharingImage.src).then((response) => {
+            navigator.clipboard.write([
+                new ClipboardItem({
+                    "image/png": response.blob(),
+                }),
+            ]);
+        });
     });
-});
+};
 
 const importSheetButton = document.getElementById("import-sheet-button");
 importSheetButton.addEventListener("mousedown", () => {
@@ -131,11 +133,14 @@ importSheetButton.addEventListener("mousedown", () => {
     const modalHeading = document.createElement("h2");
     const pasteImageFromClipboardButton = document.createElement("button");
     const imageDemo = document.createElement("img");
+    imageDemo.style.height = "30%";
+    imageDemo.style.width = "30%";
     modalContent.appendChild(modalHeading);
     modalContent.appendChild(pasteImageFromClipboardButton);
     modalContent.appendChild(imageDemo);
     modalHeading.innerText = "Upload Sheet";
     pasteImageFromClipboardButton.innerText = "Paste Image from Clipboard";
+    pasteImageFromClipboardButton.style.display = "block";
     pasteImageFromClipboardButton.addEventListener("mousedown", async () => {
         const clipboardContents = await navigator.clipboard.read();
         for (const item of clipboardContents) {
@@ -144,7 +149,9 @@ importSheetButton.addEventListener("mousedown", () => {
                 const pastedImage = URL.createObjectURL(blob);
                 imageDemo.src = pastedImage;
                 retrieveDataThroughSteganography(pastedImage, (result) => {
-                    console.log(result);
+                    createNewSheet(result.metadata.templateName, result.metadata.sheetName);
+                    saveSheetData(result.metadata.sheetName, result.sheet);
+                    setCurrentSheet(result.metadata.sheetName);
                 });
             } else {
                 console.error("Clipboard does not contain a PNG.");

@@ -462,6 +462,12 @@ const applicationStartup = () => {
         deleteButton.addEventListener("mousedown", () => {
             deleteSheet(pair.sheet);
         });
+        const exportButton = document.createElement("button");
+        exportButton.innerText = "Export Sheet";
+        newSheetElement.appendChild(exportButton);
+        exportButton.addEventListener("mousedown", () => {
+            exportSheet({ metadata: { sheetName: pair.sheet, templateName: pair.template }, sheet: retrieveSheetData(pair.sheet) });
+        });
         savedSheetsList.appendChild(newSheetElement);
     });
 
@@ -486,6 +492,10 @@ const applicationStartup = () => {
     renderCanvases();
 };
 
+const saveSheetData = (sheetName, sheetData) => {
+    localStorage.setItem(`dovecote-sheetStorage::${sheetName}`, JSON.stringify(sheetData));
+};
+
 const saveAllData = () => {
     let localStorageData = {};
     Object.keys(characterSheetData).forEach((key) => {
@@ -496,6 +506,14 @@ const saveAllData = () => {
         }
     });
     localStorage.setItem(`dovecote-sheetStorage::${currentSheet.sheet}`, JSON.stringify(localStorageData));
+};
+
+const retrieveSheetData = (sheet) => {
+    let localStorageData = localStorage.getItem(`dovecote-sheetStorage::${sheet}`);
+    if (localStorageData == null) {
+        return {};
+    }
+    return JSON.parse(localStorageData);
 };
 
 const loadAllData = () => {
